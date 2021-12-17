@@ -1,3 +1,6 @@
+# Tutorial Code
+The original code is from thedotisBlack.com, and you can find them url[here](https://www.youtube.com/c/thedotisblack/videos)
+
 # proc
 Gradle based project for Processing.org sketches. 
 See First.java for example usage.
