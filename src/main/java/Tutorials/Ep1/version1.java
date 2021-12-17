@@ -9,7 +9,7 @@ public class version1 extends PApplet {
     }
 
     public void draw() {
-        background(255);
+        background(238);
         //translate((float)width / 2, (float)height / 2);
         for (int i = -100; i < width + 100; i += 200) {
             for (int j = -100; j < height + 100; j += 200) {
