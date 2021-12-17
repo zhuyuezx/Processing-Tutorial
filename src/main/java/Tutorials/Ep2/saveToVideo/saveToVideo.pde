@@ -8,6 +8,7 @@ void setup(){
 
 void draw(){
   background(238);
+  push();
 
         mouseX = constrain(mouseX, 10, width);
         mouseY = constrain(mouseY, 10, height);
@@ -33,4 +34,6 @@ void draw(){
             }
         }
         alpha++;
+        pop();
+        rec();
     }
