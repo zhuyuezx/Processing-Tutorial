@@ -48,10 +48,10 @@ public class version1 extends PApplet {
                 a = 0;
             }
             n++;
-            a += a_;
+            a += 100 * a_;
         }
-        a_ += 1;
-        delay(10);
+        a_ += 0.01;
+        //delay(10);
     }
 
     public static void main(String[] args) {
