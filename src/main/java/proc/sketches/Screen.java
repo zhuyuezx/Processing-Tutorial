@@ -15,7 +15,7 @@ public class Screen extends PApplet {
     public void settings() {
         size(W, H);
         img = ImageLoad.getImage("sw.jpg");
-        img.resize(32,12);
+        img.resize(32, 12);
         img.loadPixels();
         noLoop();
     }
@@ -24,13 +24,12 @@ public class Screen extends PApplet {
         background(0);
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                int clr = img.get(col,row);
+                int clr = img.get(col, row);
                 fill(clr);
                 rect(col * SCALE, row * SCALE, (col + 1) * SCALE, (row + 1) * SCALE);
             }
         }
     }
-
 
 
     public static void main(String... args) {
