@@ -9,7 +9,7 @@ public class version1 extends PApplet {
     float angle;
 
     public void settings() {
-        size(1920, 1080);
+        fullScreen();
     }
 
     public void draw() {

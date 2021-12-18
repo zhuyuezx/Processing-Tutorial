@@ -27,6 +27,8 @@ public class NervousSquare {
 
     public void display() {
         operator.strokeWeight(sw);
+        float colorIndex = (float) (layer * 1.2);
+        operator.fill(colorIndex * 10, 255 - colorIndex * 25, 255 - colorIndex * 10);
         operator.rect(x, y, dia, dia);
         if (inner != null) inner.display();
     }
@@ -36,8 +38,8 @@ public class NervousSquare {
         y += operator.random(-sw, sw);
 
         if (layer == 1) {
-            x = PApplet.constrain(x, dia / 2 + sw / 2, operator.width - dia / 2 - sw / 2);
-            y = PApplet.constrain(y, dia / 2 + sw / 2, operator.height - dia / 2 - sw / 2);
+            x = (float) operator.width /2;
+            y = (float) operator.height /2;
         } else {
             x = PApplet.constrain(x, xpos - dia_ / 2 + dia / 2, xpos + dia_ / 2 - dia / 2);
             y = PApplet.constrain(y, ypos - dia_ / 2 + dia / 2, ypos + dia_ / 2 - dia / 2);

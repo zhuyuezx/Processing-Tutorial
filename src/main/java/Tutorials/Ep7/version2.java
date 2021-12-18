@@ -5,7 +5,7 @@ import processing.core.PApplet;
 public class version2 extends PApplet {
 
     float x, y;
-    float dia = (float) (1000 / 0.93);
+    float dia = (float) (1000 / 0.92);
     float sw = 5;
     NervousSquare nervousSquare;
 
@@ -17,14 +17,15 @@ public class version2 extends PApplet {
     }
 
     public void draw() {
+        background(40);
         fill(40, 40, 40);
-        stroke(255);
+        stroke(40);
         rectMode(CENTER);
         strokeWeight(sw);
 
         background(238, 238, 238);
         nervousSquare.display();
-        nervousSquare.update(width, height, 700);
+        nervousSquare.update(width, height, 1000);
     }
 
 
