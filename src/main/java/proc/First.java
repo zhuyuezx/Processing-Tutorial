@@ -1,4 +1,4 @@
-package proc.sketches;
+package proc;
 
 import processing.core.PApplet;
 
