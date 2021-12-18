@@ -2,11 +2,11 @@ package Tutorials.Ep21;
 
 import processing.core.PApplet;
 
-public class version1 extends PApplet {
+public class version2 extends PApplet {
 
     float xStep = 20;
-    float xx;
-    float angle = 5;
+    float xStepCounter = 1;
+    float angle = 10;
     boolean initialize = false;
 
     public void settings() {
@@ -21,25 +21,23 @@ public class version1 extends PApplet {
             initialize = true;
         }
         background(255);
-
-        xx = map(mouseX, 0, width, (float) -width / 2, (float) width / 2);
-        //angle = map(mouseY, 0, height, -90, 90);
-        xStep = map(mouseY, 0, height, 10, height);
+        xStep = map(xStepCounter, 0, width, width, 15);
+        if (xStepCounter < width) xStepCounter++;
 
         strokeWeight(xStep / 2);
-        translate((float) width / 2, (float) height / 2);
+        translate((float) width / 2 - 100, (float) height / 2);
         for (int x = -width / 2; x < width / 2; x += xStep) {
             line(x, (float) -height / 2, x, (float) height / 2);
         }
 
         rotate(radians(angle));
         for (int x = -width / 2; x < width / 2; x += xStep) {
-            line(x + xx, (float) -height / 2, x + xx, (float) height / 2);
+            line(x, (float) -height / 2, x, (float) height / 2);
         }
-        angle++;
+        if (xStepCounter == width) angle += 0.1;
     }
 
     public static void main(String[] args) {
-        PApplet.main("Tutorials.Ep21.version1");
+        PApplet.main("Tutorials.Ep21.version2");
     }
 }
