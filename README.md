@@ -1,5 +1,6 @@
 # Tutorial Code
-The original code is from thedotisBlack.com, and you can find the video tutorial [here](https://www.youtube.com/c/thedotisblack/videos)
+The original code is based on thedotisBlack.com, where I do sligh perosnal modifications that make them more interesting (at least from my perspective).
+## You can find the video tutorial [here](https://www.youtube.com/c/thedotisblack/videos) ##
 
 # proc
 Gradle based project for Processing.org sketches. 
