@@ -1,53 +1,43 @@
-float x, y;
-float xStep = 10;
-float yStep = 100;
-float a, a_;
+float angle;
 
-int num, numLim;
-boolean speedSign = true;
+    public void settings() {
+        size(1920, 1080);
+    }
 
-void setup() {
-        size(1600, 800);
-        num = 0;
-        numLim = (int) ((width / xStep) * (height / yStep));
-}
-
-    void draw() {
-        background(15, 20, 30);
+    public void draw() {
+        noStroke();
+        color base = color(0, 15, 30);
+        fill(base);
+        
         push();
-        strokeCap(CORNER);
-        strokeWeight(xStep);
 
-        int n = 0;
-        if (num < numLim && speedSign) {
-            num++;
-            if (num == numLim) {
-                speedSign = false;
+        background(255);
+        float x = width;
+        float dia = 200;
+        int num = 150;
+
+        translate((float) width / 2, (float) height / 2);
+        for (float a = 0; a < 360; a += 22.5) {
+            rotate(radians(a));
+            pushMatrix();
+            for (int i = 0; i < num; i++) {
+                //fill(base.getRGB(), map(num - i, 0, num, 0, 100));
+                scale((float) 0.95);
+                rotate(radians(angle));
+                ellipse(x, 0, dia, dia);
             }
-        } else if (num > 0 && !speedSign) {
-            num--;
-            if (num == 0) {
-                speedSign = true;
+            popMatrix();
+
+            pushMatrix();
+            for (int i = 0; i < num; i++) {
+                //fill(base.getRGB(), map(num - i, 0, num, 0, 100));
+                scale((float) 0.95);
+                rotate(-radians(angle));
+                ellipse(x, 0, dia, dia);
             }
+            popMatrix();
         }
-        while (n < num) {
-            stroke(255 - 255 * cos(radians(a)), 255 * cos(radians(a)),
-                    255 - 255 * sin(radians(a)), 255 - 255 * sin(radians(a)));
-            line(x, y, x, y + yStep);
-            x += xStep;
-            if (x > width) {
-                x = xStep / 2;
-                y += yStep;
-            }
-            if (y >= height) {
-                y = 0;
-                a = 0;
-            }
-            n++;
-            a += 100 * a_;
-        }
-        a_ += 0.01;
+        angle += 0.05;
         pop();
         rec();
-        //delay(10);
     }
