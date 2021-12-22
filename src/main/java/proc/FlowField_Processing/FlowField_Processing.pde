@@ -11,7 +11,7 @@ ArrayList<Particle> particles;
 boolean debug = false;
 
 void setup() {
-  size(1200, 800);
+  fullScreen();
   
   flowfield = new FlowField(10);
   flowfield.update();

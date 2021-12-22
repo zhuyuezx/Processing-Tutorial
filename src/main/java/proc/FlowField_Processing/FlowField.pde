@@ -5,7 +5,7 @@
 // Coding Challenge #24: Perlin Noise Flow  Field
 // https://youtu.be/BjoM9oKOAKY
 
-class FlowField {
+public class FlowField {
   PVector[] vectors;
   int cols, rows;
   float inc = 0.1;
@@ -23,7 +23,7 @@ class FlowField {
     for (int y = 0; y < rows; y++) { 
       float xoff = 0;
       for (int x = 0; x < cols; x++) {
-        float angle = noise(xoff, yoff, zoff) * TWO_PI * 4;
+        float angle = noise(xoff, yoff, zoff) * TWO_PI;
         
         PVector v = PVector.fromAngle(angle);
         v.setMag(1);
@@ -34,7 +34,7 @@ class FlowField {
       }
       yoff += inc;
     }
-    zoff += 0.004;
+    zoff += 0.001;
   }
   void display() {
     for (int y = 0; y < rows; y++) { 
