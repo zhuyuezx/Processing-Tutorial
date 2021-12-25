@@ -21,10 +21,9 @@ public class Tree1 extends PApplet {
 //        line(0, 0, 0, (float) width / 10);
 
         count++;
-        angle = PI / 4 + sin(radians(count / 2)) * PI / 6;
-        branch_ratio = (float) (0.67 - cos(radians(count / 3)) * 0.1);
+        angle = PI / 4 + sin(radians((float) count / 2)) * PI / 6;
+        branch_ratio = (float) (0.67 - cos(radians((float) count / 3)) * 0.1);
         scale = 2 + sin(radians(count));
-
         branch(100);
     }
 
