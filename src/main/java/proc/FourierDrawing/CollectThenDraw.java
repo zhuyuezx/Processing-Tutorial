@@ -15,38 +15,43 @@ public class CollectThenDraw extends PApplet {
     float[] pointY;
     float dt;
     float time = 0;
-    int skip = 5;
+
+    int size = 1000;
     boolean recording = true;
     boolean initialize = false;
-    float prevMouseX, prevMouseY;
+    int pointCount = 0;
+    boolean lastMousePress = false;
+    boolean[] drawOrNot;
 
     public void settings() {
         fullScreen();
         //size(1000, 800);
-        pointX = new float[1000];
-        pointY = new float[1000];
-        //loadTrain();
+        pointX = new float[size];
+        pointY = new float[size];
+        drawOrNot = new boolean[size];
     }
 
     public void draw() {
         strokeWeight(2);
         if (recording) {
-            prevMouseX = mouseX;
-            prevMouseY = mouseY;
-
             if (frameCount == 1) background(0);
             fill(0);
             noStroke();
             rect(0, 0, 1000, 100);
+
             fill(238);
             textSize(24);
-            String msg = "Remaining Time to Draw: " + (int)((1000 - frameCount) / frameRate) + " Seconds";
+            String msg = "Remaining Point to Draw: " + (size - pointCount) + " Points";
             text(msg, 40, 40, 1000, 40);
             recordData();
 
             stroke(255);
-            if (frameCount > 3)
-                line(pointX[frameCount - 2] + width / 2, pointY[frameCount - 2] + height / 2, mouseX, mouseY);
+            if (pointCount > 3 && mousePressed) {
+                if (lastMousePress)
+                    line(pointX[pointCount - 2] + width / 2, pointY[pointCount - 2] + height / 2,
+                        mouseX, mouseY);
+            }
+            lastMousePress = mousePressed;
             return;
         }
 
@@ -63,14 +68,14 @@ public class CollectThenDraw extends PApplet {
         background(0);
         float[] vx;
         float[] vy;
-        time += dt;
-        if (time > TWO_PI){
+        if (time > TWO_PI) {
             time = 0;
             path = new ArrayList<>();
         }
+        time += dt;
 
-        vx = epiCycles(width/2,100, fourierX, 0);
-        vy = epiCycles(100,height/2, fourierY, HALF_PI);
+        vx = epiCycles(width / 2, 100, fourierX, 0);
+        vy = epiCycles(100, height / 2, fourierY, HALF_PI);
 
         line(vx[0], 100, vx[0], vy[1]);
         line(100, vy[1], vx[0], vy[1]);
@@ -80,13 +85,15 @@ public class CollectThenDraw extends PApplet {
 
         noFill();
         beginShape();
-        for (PVector vertex : path) {
-            vertex(vertex.x, vertex.y);
+        for (int i = 1; i < path.size(); i++) {
+            if (i < size - 1 && drawOrNot[i + 1])
+                line(path.get(i - 1).x, path.get(i - 1).y, path.get(i).x, path.get(i).y);
+                //vertex(vertex.x, vertex.y);
         }
         endShape();
     }
 
-    public Phasor[] dft (float[] x) { // discrete Fourier Transform
+    public Phasor[] dft(float[] x) { // discrete Fourier Transform
         int N = x.length;
         Phasor[] X = new Phasor[N];
         for (int k = 0; k < N; k++) {
@@ -109,7 +116,7 @@ public class CollectThenDraw extends PApplet {
         return X;
     }
 
-    public float[] epiCycles(float x, float y, Phasor[] Phasors, float rotation){
+    public float[] epiCycles(float x, float y, Phasor[] Phasors, float rotation) {
         float oldx;
         float oldy;
         float[] point = new float[2];
@@ -132,7 +139,7 @@ public class CollectThenDraw extends PApplet {
             line(oldx, oldy, x, y);
         }
 
-        ellipse(x,y,5, 5);
+        ellipse(x, y, 5, 5);
         point[0] = x;
         point[1] = y;
         return point;
@@ -141,12 +148,10 @@ public class CollectThenDraw extends PApplet {
     public void Sort(Phasor[] Phasors) {
         int n = Phasors.length;
 
-        for (int i = 0; i < n-1; i++)
-        {
+        for (int i = 0; i < n - 1; i++) {
             int mindex = i;
 
-            for (int j = i+1; j < n; j++)
-            {
+            for (int j = i + 1; j < n; j++) {
                 if (Phasors[j].amplitude > Phasors[mindex].amplitude)
                     mindex = j;
             }
@@ -154,30 +159,21 @@ public class CollectThenDraw extends PApplet {
         }
     }
 
-    public void swap(Phasor[] Phasors, int i, int j)
-    {
+    public void swap(Phasor[] Phasors, int i, int j) {
         Phasor temp = Phasors[i];
         Phasors[i] = Phasors[j];
         Phasors[j] = temp;
     }
 
     public void recordData() {
+        if (!mousePressed) return;
         if (pointX[pointX.length - 1] == 0) {
-            pointX[frameCount - 1] = mouseX - width / 2;
-            pointY[frameCount - 1] = mouseY - height / 2;
+            pointX[pointCount] = mouseX - width / 2;
+            pointY[pointCount] = mouseY - height / 2;
+            drawOrNot[pointCount] = lastMousePress;
+            pointCount++;
         } else
             recording = false;
-    }
-
-    public void loadTrain() {
-        JSONArray train = loadJSONObject("src\\main\\java\\proc\\FourierDrawing\\train.json").getJSONArray("drawing");
-        pointX = new float[train.size()/skip];
-        pointY = new float[train.size()/skip];
-
-        for (int i = 0; i < train.size()/skip; i+= 1) {
-            pointX[i] = train.getJSONObject(i*skip).getFloat("x");
-            pointY[i] = train.getJSONObject(i*skip).getFloat("y");
-        }
     }
 
     public static void main(String[] args) {
