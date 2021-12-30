@@ -26,7 +26,7 @@ public class MandelbrotSet extends PApplet {
 
         loadPixels();
 
-        int maxIterations = 1000;
+        int maxIterations = 256;
 
         float xMax = xMin + w;
         float yMax = yMin + h;

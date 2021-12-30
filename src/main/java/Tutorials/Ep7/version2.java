@@ -19,7 +19,8 @@ public class version2 extends PApplet {
     public void draw() {
         background(40);
         fill(40, 40, 40);
-        stroke(40);
+        noStroke();
+        //stroke(40);
         rectMode(CENTER);
         strokeWeight(sw);
 

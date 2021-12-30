@@ -11,7 +11,7 @@ public class version1 extends PApplet {
 
     public void draw() {
         background(0, 15, 30);
-        surface.setLocation(957, 0);
+        //surface.setLocation(957, 0);
         rectMode(CENTER);
         stroke(0, 15, 30);
         strokeWeight(25);
