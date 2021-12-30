@@ -16,8 +16,8 @@ public class Mandelbrot2 extends PApplet {
     Color[] colors;
 
     public void settings() {
-        //fullScreen();
-        size(960, 540);
+        fullScreen();
+        //size(960, 540);
         colors = new Color[]{
                 new Color(0, 7, 100),
                 new Color(32, 107, 203),
