@@ -8,6 +8,7 @@ function setup() {
     window.innerHeight
   );
   background(0);
+  //frameRate(5);
   var x = 0;
   for (var i = 0; i <= width / symbolSize; i++) {
     var stream = new Stream();
