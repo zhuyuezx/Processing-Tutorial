@@ -27,7 +27,7 @@ public class FlowField2 extends PApplet {
         for (Particle p : particles) {
             p.update();
         }
-        if (particles.size() < 8000) {
+        if (particles.size() < 10000) {
             for (int w = 0; w < 10; w++) {
                 particles.add(new Particle(random(width), random(height)));
             }
@@ -35,7 +35,7 @@ public class FlowField2 extends PApplet {
     }
 
     public void mouseClicked() {
-        particles.add(new Particle(random(width), random(height)));
+        saveFrame("src/main/java/proc/FlowField/frames/####.jpg");
     }
 
     private class Particle {
