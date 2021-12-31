@@ -9,6 +9,7 @@ function Particle(x, y) {
       this.prev.x = this.pos.x;
       this.prev.y = this.pos.y;  
       this.vel.add(this.acc);
+      this.vel.limit(10);
       this.pos.add(this.vel);
       this.acc.mult(0);
     }

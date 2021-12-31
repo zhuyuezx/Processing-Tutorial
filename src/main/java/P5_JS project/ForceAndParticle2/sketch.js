@@ -3,7 +3,10 @@ var particles = [];
 
 function setup() {
   //frameRate(1);
-  createCanvas(400, 400);
+  createCanvas(
+    window.innerWidth,
+    window.innerHeight
+    );
   // for (var i = 0; i < 10; i++) {
   //   attractors.push(createVector(random(width), random(height)));
   // }
@@ -11,7 +14,10 @@ function setup() {
 }
 
 function mousePressed() {
+  if (mouseButton == LEFT)
   attractors.push(createVector(mouseX, mouseY));
+  else if (mouseButton == RIGHT)
+  attractors.splice(attractors.length - 1, 1);
 }
 
 function draw() {
@@ -20,7 +26,7 @@ function draw() {
   strokeWeight(4);
   particles.push(new Particle(random(width), random(height)));
 
-  if (particles.length > 200) {
+  if (particles.length > 400) {
     particles.splice(0, 1);
   }
 

@@ -2,7 +2,6 @@ package proc.FourierDrawing;
 
 import processing.core.PApplet;
 import processing.core.PVector;
-import processing.data.JSONArray;
 
 import java.util.ArrayList;
 

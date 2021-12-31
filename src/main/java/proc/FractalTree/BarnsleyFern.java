@@ -13,7 +13,7 @@ public class BarnsleyFern extends PApplet {
 
     public void draw() {
         if (!initialize) {
-            background(0);
+            background(238);
             initialize = true;
         }
         for (int i = 0; i < 500; i++) {
@@ -23,7 +23,7 @@ public class BarnsleyFern extends PApplet {
     }
 
     public void drawPoint() {
-        stroke(255);
+        stroke(34, 139, 34);
         strokeWeight(2);
         float px = map(x, (float) -2.1820, (float) 2.6558, 0, width);
         float py = map(y, 0, (float) 9.9983, height, 0);
