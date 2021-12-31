@@ -13,20 +13,21 @@ public class BarnsleyFern extends PApplet {
 
     public void draw() {
         if (!initialize) {
+            colorMode(HSB);
             background(238);
             initialize = true;
         }
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 1000; i++) {
             drawPoint();
             nextPoint();
         }
     }
 
     public void drawPoint() {
-        stroke(34, 139, 34);
-        strokeWeight(2);
+        strokeWeight(1);
         float px = map(x, (float) -2.1820, (float) 2.6558, 0, width);
         float py = map(y, 0, (float) 9.9983, height, 0);
+        stroke(map(-y, (float) -9.9983, 0, 0, 255), 255, 255);
         point(px, py);
     }
 
