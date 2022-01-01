@@ -5,13 +5,14 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
-public class Initializer extends PApplet{
+public class Initializer extends PApplet {
 
     ArrayList<Borg> borgs;
 
     public void settings() {
         fullScreen();
         size(1920, 1080);
+
         borgs = new ArrayList<>();
         for (int i = 0; i < 300; i++) {
             borgs.add(new Borg(random(width), random(height), this));
@@ -22,7 +23,7 @@ public class Initializer extends PApplet{
         fill(200, 1);
         rect(0, 0, width, height);
         checkCollisions();
-        for (Borg b: borgs) {
+        for (Borg b : borgs) {
             b.update();
             b.display();
         }
@@ -54,6 +55,7 @@ public class Initializer extends PApplet{
         borgs.removeAll(toDie);
         borgs.addAll(toCreate);
     }
+
 
     public static void main(String[] args) {
         PApplet.main("proc.SwarmParticle.Initializer");

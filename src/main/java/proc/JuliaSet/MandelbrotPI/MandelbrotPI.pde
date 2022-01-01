@@ -3,20 +3,20 @@ double minRe = -2.5, maxRe = 1;
 double minIm = -1, maxIm = 1;
 boolean pressedLeft = false;
 boolean pressedRight = false;
-long zoom = (long)1.0;
+double zoom = 1.0;
 
 color[] colors;
 
-public void settings() {
+public void setup() {
   fullScreen();
-  //colors = new color[]{
-  //  color(0, 7, 100), color(32, 107, 203), 
-  //  color(237, 255, 255), color(255, 170, 0), 
-  //  color(0, 2, 0)};
   colors = new color[]{
-    color(0), color(213, 67, 31), 
-    color(251, 255, 121), color(62, 223, 89), 
-    color(43, 30, 218), color(0, 255, 247)};
+    color(0, 7, 100), color(32, 107, 203), 
+    color(237, 255, 255), color(255, 170, 0), 
+    color(0, 2, 0)};
+  //colors = new color[]{
+  //  color(0), color(213, 67, 31), 
+  //  color(251, 255, 121), color(62, 223, 89), 
+  //  color(43, 30, 218), color(0, 255, 247)};
 }
 
 public void draw() {
@@ -27,7 +27,7 @@ public void draw() {
   } else if (mousePressed && mouseButton == RIGHT && !pressedRight) {
     pressedRight = true;
     zoomX(1.0 / 5);
-    zoom /= 5;
+    zoom /= 5.0;
   }
 
   loadPixels();
@@ -45,7 +45,7 @@ public void draw() {
       }
 
       int maxColor = colors.length - 1;
-      if (iter == maxIter) iter = 0;
+      //if (iter == maxIter) iter = 0;
       double mu = 1.0 * iter / maxIter;
       mu *= maxColor;
       int iMu = (int)mu;
@@ -79,7 +79,7 @@ public color linearInterpolation(color c1, color c2, double a) {
 public void mouseWheel(MouseEvent event) {
   if (event.getCount() > 0) maxIter /= 2;
   if (event.getCount() < 0) maxIter *= 2;
-  maxIter = constrain(maxIter, 1, 1024);
+  maxIter = constrain(maxIter, 1, 2048);
 }
 
 public void mouseReleased() {
