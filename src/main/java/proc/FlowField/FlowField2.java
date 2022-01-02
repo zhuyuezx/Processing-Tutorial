@@ -34,7 +34,8 @@ public class FlowField2 extends PApplet {
         }
     }
 
-    public void mouseClicked() {
+    public void keyPressed() {
+        if (key == ' ')
         saveFrame("src/main/java/proc/FlowField/frames/####.jpg");
     }
 
