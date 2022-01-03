@@ -1,55 +1,77 @@
-// Daniel Shiffman
-// http://youtube.com/thecodingtrain
-// http://codingtra.in
-//
-// Coding Challenge #24: Perlin Noise Flow  Field
-// https://youtu.be/BjoM9oKOAKY
+// Step1: what is perlin noise? apply in 2D ... Complete!
+// Step2: illustrate flowfield by perlin noise ... Complete!
+// Step3: create "Particle" class ... Complete!
+// Step4: let particles follow the flowfield ... Complete!
+// Step5: adding more particle generation ... Complete!
+// Step6: changing color mode to HSB ... Complete!
+// Step7: vectorize all the parameters to easier control ... Complete!
+// Step8: Let's do some interesting modifications and enable saving ... Complete!
 
-public class FlowField {
-  PVector[] vectors;
-  int cols, rows;
-  float inc = 0.1;
-  float zoff = 0;
-  int scl;
-  
-  FlowField(int res) {
-    scl = res;
-    cols = floor(width / res) + 1;
-    rows = floor(height / res) + 1;
-    vectors = new PVector[cols * rows];
+float angle = 0;
+float strength = 0.005;
+float noiseValue;
+float speed = 100;
+float angleMag = 1;
+float colorFreq = 1.5;
+float transparency = 150;
+
+ArrayList<Particle> particles;
+
+void setup() {
+  fullScreen();
+  background(0);
+  colorMode(HSB);
+  particles = new ArrayList<Particle>();
+}
+
+void draw() {
+  //loadPixels();
+  //for (int y = 0; y < height; y++) {
+  //  for (int x = 0; x < width; x++) {
+  //    float noiseValue = noise(x * strength, y * strength);
+  //    color toFill = color(noiseValue * 255);
+  //    pixels[x + y * width] = toFill;
+  //  }
+  //}
+  //updatePixels();
+  for (Particle p : particles) p.update();
+
+  if (particles.size() < 10000) {
+    for (int i = 0; i < 10; i++)
+      particles.add(new Particle(random(width), random(height)));
   }
+}
+
+class Particle {
+
+  PVector pos;
+  PVector vel;
+
+  Particle(float x, float y) {
+    pos = new PVector(x, y);
+    vel = new PVector(0, 0);
+  }
+
   void update() {
-    float yoff = 0;
-    for (int y = 0; y < rows; y++) { 
-      float xoff = 0;
-      for (int x = 0; x < cols; x++) {
-        float angle = noise(xoff, yoff, zoff) * TWO_PI;
-        
-        PVector v = PVector.fromAngle(angle);
-        v.setMag(1);
-        int index = x + y * cols;
-        vectors[index] = v;
-       
-        xoff += inc;
-      }
-      yoff += inc;
-    }
-    zoff += 0.001;
+    if (pos.x < 0 || pos.x > width || pos.y < 0 || pos.y > height) 
+      return;
+
+    noiseValue = noise(pos.x * strength, pos.y * strength);
+    vel = PVector.fromAngle(noiseValue * angleMag * TWO_PI);
+    vel.setMag(speed);
+    pos.add(PVector.div(vel, frameRate));
+    display();
   }
+
   void display() {
-    for (int y = 0; y < rows; y++) { 
-      for (int x = 0; x < cols; x++) {
-        int index = x + y * cols;
-        PVector v = vectors[index];
-        
-        stroke(0, 0, 0, 40);
-        strokeWeight(0.1);
-        pushMatrix();
-        translate(x * scl, y * scl);
-        rotate(v.heading());
-        line(0, 0, scl, 0);
-        popMatrix();
-      }
-    }
+    fill((255 * noiseValue * colorFreq) % 255, 255, 255, transparency);
+    noStroke();
+    ellipse(pos.x, pos.y, 0.5, 0.5);
+  }
+}
+
+void keyPressed() {
+  if (key == ' ') {
+   saveFrame("frame-####.jpg"); 
   }
 }
