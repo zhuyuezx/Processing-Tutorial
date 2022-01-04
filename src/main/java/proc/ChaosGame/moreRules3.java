@@ -3,19 +3,20 @@ package proc.ChaosGame;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class ver2 extends PApplet {
+public class moreRules3 extends PApplet {
 
     boolean initialize = false;
     PVector[] points;
 
-    int numberOfNodes = 5;
-    float percent = 0.5F;
+    int numberOfNodes = 4;
+    float percent = (float) 2 / 3;
     PVector current;
-    PVector previous;
+    int previous1;
+    int previous2;
 
     public void settings() {
         size(1000, 1000);
-        points = new PVector[numberOfNodes];
+        points = new PVector[numberOfNodes + 1];
         //size(600, 600);
     }
 
@@ -35,8 +36,8 @@ public class ver2 extends PApplet {
                     line(points[i].x, points[i].y, points[i - 1].x, points[i - 1].y);
                 }
             }
-            line(points[0].x, points[0].y, points[points.length - 1].x, points[points.length - 1].y);
-
+            points[points.length - 1] = new PVector();
+            line(points[0].x, points[0].y, points[points.length - 2].x, points[points.length - 2].y);
 
             current = new PVector(random(width), random(height));
 
@@ -46,22 +47,27 @@ public class ver2 extends PApplet {
 //            }
             initialize = true;
         }
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 2000; i++) {
             strokeWeight(1);
 
             int r = (int) random(points.length);
-            stroke(255 / numberOfNodes * r, 200, 255);
+            stroke(255 / points.length * r, 200, 255);
             PVector next = points[r];
-            if (next != previous) {
+            if (checkValid(r)) {
                 current.x = lerp(current.x, next.x, percent);
                 current.y = lerp(current.y, next.y, percent);
                 point(current.x, current.y);
+                previous2 = previous1;
+                previous1 = r;
             }
-            previous = next;
         }
     }
 
+    public boolean checkValid(int r) {
+        return true;
+    }
+
     public static void main(String[] args) {
-        PApplet.main(ver2.class.getName());
+        PApplet.main(moreRules3.class.getName());
     }
 }

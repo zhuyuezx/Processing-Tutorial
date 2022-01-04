@@ -3,7 +3,7 @@ package proc.ChaosGame;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class ver2 extends PApplet {
+public class moreRules1 extends PApplet {
 
     boolean initialize = false;
     PVector[] points;
@@ -11,7 +11,7 @@ public class ver2 extends PApplet {
     int numberOfNodes = 5;
     float percent = 0.5F;
     PVector current;
-    PVector previous;
+    int previous;
 
     public void settings() {
         size(1000, 1000);
@@ -37,7 +37,6 @@ public class ver2 extends PApplet {
             }
             line(points[0].x, points[0].y, points[points.length - 1].x, points[points.length - 1].y);
 
-
             current = new PVector(random(width), random(height));
 
             strokeWeight(4);
@@ -46,22 +45,22 @@ public class ver2 extends PApplet {
 //            }
             initialize = true;
         }
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 2000; i++) {
             strokeWeight(1);
 
             int r = (int) random(points.length);
             stroke(255 / numberOfNodes * r, 200, 255);
             PVector next = points[r];
-            if (next != previous) {
+            if (r != (previous + 1) % numberOfNodes) {
                 current.x = lerp(current.x, next.x, percent);
                 current.y = lerp(current.y, next.y, percent);
                 point(current.x, current.y);
+                previous = r;
             }
-            previous = next;
         }
     }
 
     public static void main(String[] args) {
-        PApplet.main(ver2.class.getName());
+        PApplet.main(moreRules1.class.getName());
     }
 }
