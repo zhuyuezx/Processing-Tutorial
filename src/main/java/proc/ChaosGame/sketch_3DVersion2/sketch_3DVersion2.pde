@@ -1,4 +1,5 @@
 import peasy.*;
+import peasy.org.apache.commons.math.geometry.*;
 
 PVector[] points;
 int numOfPoint = 20;
@@ -6,14 +7,16 @@ float size = 200;
 float percent = (float)2 / 3;
 ArrayList<PVector> current;
 ArrayList<Integer> colorInfo;
+float rotateAngle = 0;
 
 PeasyCam cam;
 
 public void setup() {
   background(0);
   colorMode(HSB);
-  size(800, 800, P3D);
-  cam = new PeasyCam(this, 500);
+  fullScreen(P3D);
+  //size(800, 800, P3D);
+  cam = new PeasyCam(this, 600);
 
   points = new PVector[numOfPoint];
   points[0] = new PVector(size, size, size);
@@ -46,12 +49,25 @@ public void setup() {
 public void draw() {
   //println(current.get(current.size() - 1));
   background(0);
+  for (int i = 0; i < numOfPoint; i++) {
+    stroke(0, 0, 255);
+    strokeWeight(10);
+    point(points[i].x, points[i].y, points[i].z);
+  }
   stroke(10, 150, 255);
   strokeWeight(4);
+
+  Rotation rot = new Rotation(RotationOrder.XYZ, rotateAngle / 2, rotateAngle, rotateAngle / 3);
+  Vector3D center = Vector3D.zero; // look at the origin (0,0,0)
+  double distance = map(rotateAngle % 2, 0, 2, 100, 1000); // from this far away
+  CameraState state = new CameraState(rot, center, distance);
+  cam.setState(state, 1000);
+  rotateAngle += 0.01;
+
   drawCurr();
-  
-  if (current.size() > 100000) return;
-  
+
+  if (current.size() > 1000000) return;
+
   for (int i = 0; i < 100; i++) {
     int index = int(random(points.length));
     PVector next = points[index];
