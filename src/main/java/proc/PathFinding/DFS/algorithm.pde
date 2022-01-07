@@ -1,4 +1,4 @@
-void BFS() {
+void DFS() {
   if (route.size() > 0) {
     current = route.get(0);
     if (current == end) {
@@ -10,13 +10,12 @@ void BFS() {
     route.remove(current);
 
     ArrayList<Cell> neighbours = current.neighbours;
-    for (Cell neighbour : neighbours) {
-      println(neighbour.i);
-      println(neighbour.j);
+    for (int i = neighbours.size() - 1; i >= 0; i--) {
+      Cell neighbour = neighbours.get(i);
       if (!neighbour.visited) {
         neighbour.visited = true;
         neighbour.previous = current;
-        route.add(neighbour);
+        route.add(0, neighbour);
       }
     }
     drawWindow();
@@ -65,13 +64,13 @@ void drawWindow() {
     return;
   }
   
-  //noFill();
-  //stroke(255, 255, 0, 200);
-  //strokeWeight(w / 2);
-  //beginShape();
-  //for (int i = 0; i < path.size(); i++) {
-  //  vertex(path.get(i).i * w + w / 2, path.get(i).j * w + w / 2);
-  //}
-  //endShape();
-  //strokeWeight(2);
+  noFill();
+  stroke(255, 255, 0, 200);
+  strokeWeight(w / 2);
+  beginShape();
+  for (int i = 0; i < path.size(); i++) {
+    vertex(path.get(i).i * w + w / 2, path.get(i).j * w + w / 2);
+  }
+  endShape();
+  strokeWeight(2);
 }

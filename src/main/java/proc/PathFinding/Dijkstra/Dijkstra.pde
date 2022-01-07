@@ -6,16 +6,10 @@ Cell end;
 boolean drawFinish = false;
 boolean findPath = false;
 int pathCount = 0;
-int methodCount = 0;
 
 Cell current;
 ArrayList<Cell> stack;
 
-// A*
-ArrayList<Cell> openSet;
-ArrayList<Cell> closedSet;
-
-// Best First
 ArrayList<Cell> route;
 
 
@@ -24,11 +18,11 @@ int heuristic(Cell a, Cell b) {
 }
 
 void setup() {
-  size(1000, 1000);
+  size(800, 800);
+  strokeWeight(2);
   cols = (int)(width / w);
   rows = (int)(height / w);
   grid = new Cell[cols * rows];
-  
   stack = new ArrayList<Cell>();
 
   for (int j = 0; j < rows; j++) {
@@ -40,17 +34,12 @@ void setup() {
   start = grid[0];
   end = grid[grid.length - 1];
 
-  openSet = new ArrayList<Cell>();
-  closedSet = new ArrayList<Cell>();
-  openSet.add(start);
-
   route = new ArrayList<Cell>();
   route.add(start);
 }
 
 void draw() {
   background(20);
-  strokeWeight(2);
   if (!drawFinish) {
     for (int i = 0; i < grid.length; i++) {
       grid[i].show(color(50, 100));
@@ -74,25 +63,14 @@ void draw() {
         for (Cell c : grid) {
           c.addNeighbours();
           c.visited = false;
+          route.add(c);
         }
-        start.visited = true;
+        route.get(0).dist = 0;
         return;
       }
     }
   } else {
-    if (methodCount == 0)
-      AStar();
-    else if (methodCount == 1)
-      GreedyFirst();
-    else if (methodCount == 2)
-      BFS();
-    else if (methodCount == 3)
-      DFS();
-    else if (methodCount == 4)
-      Dijkstra();
-    else
-      noLoop();
-    return;
+    Dijkstra();
   }
 }
 
@@ -113,36 +91,4 @@ void removeWalls(Cell a, Cell b) {
     a.walls[2] = false;
     b.walls[0] = false;
   }
-}
-
-void reset() {
-  findPath = false;
-  pathCount = 0;
-  methodCount++;
-  methodCount = methodCount % 5;
-  println(methodCount);
-
-  current = grid[0];
-  start = grid[0];
-  end = grid[grid.length - 1];
-
-  openSet = new ArrayList<Cell>();
-  closedSet = new ArrayList<Cell>();
-  route = new ArrayList<Cell>();
-  openSet.add(start);
-  route.add(start);
-
-  if (methodCount == 4) {
-    for (Cell c : grid) {
-      c.visited = false;
-      route.add(c);
-    }
-    route.get(0).dist = 0;
-    return;
-  }
-
-  for (Cell c : grid) {
-    c.visited = false;
-  }
-  start.visited = true;
 }

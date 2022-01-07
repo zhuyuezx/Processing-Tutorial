@@ -36,10 +36,11 @@ class Cell {
     if (this.walls[3])
       line(x, y + w, x, y);
 
-    if (this.visited) {
+    if (this.visited && drawFinish) {
       noStroke();
       fill(c);
       rect(x, y, w, w);
+      //rect(x + w / 4, y + w / 4, w / 2, w / 2);
     }
   }
 

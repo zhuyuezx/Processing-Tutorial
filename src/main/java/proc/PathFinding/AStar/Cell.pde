@@ -5,7 +5,6 @@ class Cell {
   boolean visited = false;
   int f = 0, g = 0;
   int heuristic = 0;
-  int dist = rows * cols + 1;
   ArrayList<Cell> neighbours = new ArrayList<Cell>();
 
   Cell previous = null;

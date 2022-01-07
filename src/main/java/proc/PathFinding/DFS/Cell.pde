@@ -5,7 +5,6 @@ class Cell {
   boolean visited = false;
   int f = 0, g = 0;
   int heuristic = 0;
-  int dist = rows * cols + 1;
   ArrayList<Cell> neighbours = new ArrayList<Cell>();
 
   Cell previous = null;
@@ -36,20 +35,21 @@ class Cell {
     if (this.walls[3])
       line(x, y + w, x, y);
 
-    if (this.visited) {
+    if (this.visited && drawFinish) {
       noStroke();
       fill(c);
       rect(x, y, w, w);
+      //rect(x + w / 4, y + w / 4, w / 2, w / 2);
     }
   }
 
   void addNeighbours() {
-    if (!walls[0] && j > 0)
-      neighbours.add(grid[index(i, j - 1)]);
     if (!walls[1] && i < cols - 1)
       neighbours.add(grid[index(i + 1, j)]);
     if (!walls[2] && j < rows - 1)
       neighbours.add(grid[index(i, j + 1)]);
+    if (!walls[0] && j > 0)
+      neighbours.add(grid[index(i, j - 1)]);
     if (!walls[3] && i > 0)
       neighbours.add(grid[index(i - 1, j)]);
   }

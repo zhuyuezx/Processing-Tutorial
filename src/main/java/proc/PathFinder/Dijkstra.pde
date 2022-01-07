@@ -1,44 +1,27 @@
-void AStar() {
-  if (openSet.size() > 0) {
+void Dijkstra() {
+  if (route.size() > 0) {
     int winner = 0;
-    for (int i = 0; i < openSet.size(); i++) {
-      if (openSet.get(i).f < openSet.get(winner).f) {
+    for (int i = 0; i < route.size(); i++) {
+      if (route.get(i).dist < route.get(winner).dist) {
         winner = i;
       }
     }
-    current = openSet.get(winner);
-
+    current = route.get(winner);
+    current.visited = true;
     if (current == end) {
       findPath = true;
       //noLoop();
-      drawWindowAStar();
+      drawWindow();
       return;
     }
-
-    openSet.remove(current);
-    closedSet.add(current);
+    route.remove(winner);
 
     ArrayList<Cell> neighbours = current.neighbours;
     for (Cell neighbour : neighbours) {
-      if (!closedSet.contains(neighbour)) {
-        int tempG = current.g + heuristic(neighbour, current);
-
-        boolean newPath = false;
-        if (openSet.contains(neighbour)) {
-          if (tempG < neighbour.g) {
-            neighbour.g = tempG;
-            newPath = true;
-          }
-        } else {
-          neighbour.g = tempG;
-          newPath = true;
-          openSet.add(neighbour);
-          neighbour.visited = true;
-        }
-
-        if (newPath) {
-          neighbour.heuristic = heuristic(neighbour, end);
-          neighbour.f = neighbour.g + neighbour.heuristic;
+      if (!neighbour.visited) {
+        int alt = current.dist + 1;
+        if (alt < neighbour.dist) {
+          neighbour.dist = alt;
           neighbour.previous = current;
         }
       }
@@ -48,29 +31,21 @@ void AStar() {
     noLoop();
     return;
   }
-  drawWindowAStar();
+  drawWindow();
 }
 
-void drawWindowAStar() {
+void drawWindow() {
   background(20);
   for (Cell c : grid) {
-    if (openSet.contains(c) && !findPath)
+    if (current == c && !findPath)
       c.show(color(0, 255, 0, 150));
-    else if (c.visited && !findPath)
-      c.show(color(255, 0, 0, 150));
-    else 
+    else if (!c.visited || findPath)
       c.show(color(50, 100));
+    else 
+    c.show(color(200, 0, 0, 150));
   }
-  //if (!findPath) {
-  //  for (Cell c : closedSet) {
-  //    c.show(color(255, 0, 0, 150));
-  //  }
-  //  for (Cell c : openSet) {
-  //    c.show(color(0, 255, 0, 150));
-  //  }
-  //}
   end.show(color(200, 0, 150));
-
+  
   ArrayList<Cell> path = new ArrayList<Cell>();
   Cell temp = current;
   path.add(temp);
@@ -81,7 +56,7 @@ void drawWindowAStar() {
 
   if (findPath) {
     boolean endTrack = false;
-
+    
     stroke(200, 0, 150);
     strokeWeight(w / 2);
     Cell track = current.previous;
@@ -98,7 +73,7 @@ void drawWindowAStar() {
     }
     pathCount++;
     strokeWeight(2);
-
+    
     if (endTrack) {
       delay(3000);
       reset();
