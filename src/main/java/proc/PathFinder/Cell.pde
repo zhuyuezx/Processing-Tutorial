@@ -3,8 +3,8 @@ class Cell {
   int i, j;
   boolean[] walls = new boolean[]{true, true, true, true};
   boolean visited = false;
-  float f = 0, g = 0;
-  float heurisitic = 0;
+  int f = 0, g = 0;
+  int heuristic = 0;
   ArrayList<Cell> neighbours = new ArrayList<Cell>();
 
   Cell previous = null;
@@ -22,7 +22,7 @@ class Cell {
     rect(x, y, w, w);
   }
 
-  void show() {
+  void show(color c) {
     int x = i * w;
     int y = j * w;
     stroke(255);
@@ -37,7 +37,7 @@ class Cell {
 
     if (this.visited) {
       noStroke();
-      fill(50, 100);
+      fill(c);
       rect(x, y, w, w);
     }
   }
