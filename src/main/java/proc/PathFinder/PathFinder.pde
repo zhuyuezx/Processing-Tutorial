@@ -1,52 +1,54 @@
-int cols, rows;
+// Step1: create the basic grid
+// Step2: try implementing the maze generating algorithm
+// Step3: create stack to aviod dead end
+// Step4: first implement a basic search algorithm
+// Step5: show path and backtrack
+// Step6: implement more algorithms and apply them to same maze
+// Step7: implement another random generation for comparison
+// Step8: enable recording
+
+int rows, cols;
 int w = 20;
+Cell current;
 Cell[] grid;
-Cell start;
-Cell end;
+int pathCount = 0;
+int methodCount = 0;
+int generateCount = 0;
+
+ArrayList<Cell> route;
+ArrayList<Cell> closedSet;
+Cell start, end;
+
 boolean drawFinish = false;
 boolean findPath = false;
-int pathCount = 0;
-int generateCount = 0;
-int methodCount = 0;
 
-Cell current;
 ArrayList<Cell> stack;
-
-// A*
-ArrayList<Cell> openSet;
-ArrayList<Cell> closedSet;
-
-// Best First
-ArrayList<Cell> route;
-
 
 int heuristic(Cell a, Cell b) {
   return abs(a.i - b.i) + abs(a.j - b.j);
 }
 
 void setup() {
-  //fullScreen();
-  size(1000, 1000);
+  size(200, 200);
   cols = (int)(width / w);
   rows = (int)(height / w);
-  grid = new Cell[cols * rows];
-
-  stack = new ArrayList<Cell>();
+  grid = new Cell[rows * cols];
 
   for (int j = 0; j < rows; j++) {
     for (int i = 0; i < cols; i++) {
       grid[i + j * cols] = new Cell(i, j);
     }
   }
+  stack = new ArrayList<Cell>();
   current = grid[0];
-  start = grid[0];
-  end = grid[grid.length - 1];
-
-  openSet = new ArrayList<Cell>();
-  closedSet = new ArrayList<Cell>();
-  openSet.add(start);
-
   route = new ArrayList<Cell>();
+  closedSet = new ArrayList<Cell>();
+  start = grid[0];
+  int endIndex = start.index(
+    (int)random(cols - 5, cols), 
+    (int)random(rows - 5, rows)
+    );
+  end = grid[endIndex];
   route.add(start);
 }
 
@@ -65,7 +67,7 @@ void draw() {
     if (methodCount == 0)
       AStar();
     else if (methodCount == 1)
-      GreedyFirst();
+      BestFirst();
     else if (methodCount == 2)
       BFS();
     else if (methodCount == 3)
@@ -87,7 +89,7 @@ void removeWalls(Cell a, Cell b) {
   } else if (x == -1) {
     a.walls[1] = false;
     b.walls[3] = false;
-  } 
+  }
   int y = a.j - b.j;
   if (y == 1) {
     a.walls[0] = false;
@@ -99,9 +101,15 @@ void removeWalls(Cell a, Cell b) {
 }
 
 void reset() {
-  findPath = false;
-  frameCount = 0;
+  route = new ArrayList<Cell>();
+  closedSet = new ArrayList<Cell>();
   pathCount = 0;
+  frameCount = 0;
+  findPath = false;
+  start = grid[0];
+  current = grid[0];
+  route.add(start);
+
   methodCount++;
   if (methodCount == 5) {
     generateCount++;
@@ -110,19 +118,13 @@ void reset() {
       for (int wall = 0; wall < 4; wall++) 
         c.walls[wall] = true;
     }
+    int endIndex = start.index(
+    (int)random(cols - 5, cols), 
+    (int)random(rows - 5, rows)
+    );
+  end = grid[endIndex];
   }
-  //generateCount %= 2;
   methodCount %= 5;
-
-  current = grid[0];
-  start = grid[0];
-  end = grid[grid.length - 1];
-
-  openSet = new ArrayList<Cell>();
-  closedSet = new ArrayList<Cell>();
-  route = new ArrayList<Cell>();
-  openSet.add(start);
-  route.add(start);
 
   if (methodCount == 4) {
     for (Cell c : grid) {
@@ -133,8 +135,8 @@ void reset() {
     return;
   }
 
-  for (Cell c : grid) {
+  for (Cell c : grid)
     c.visited = false;
-  }
+
   start.visited = true;
 }

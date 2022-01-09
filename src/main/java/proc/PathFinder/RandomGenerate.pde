@@ -1,4 +1,7 @@
 void randomGenerate() {
+  removeWalls(grid[0], grid[1]);
+  removeWalls(grid[grid.length - 1], grid[grid.length - 2]);
+
   for (int n = 0; n < 3; n++) {
     Cell current = grid[frameCount * 3 - 3 + n];
     int i = current.i, j = current.j;
@@ -23,7 +26,7 @@ void randomGenerate() {
   }
 
   for (Cell c : grid) 
-    c.show(color(50, 100));
+    c.show(color(20, 100));
 
   if (frameCount > grid.length / 3 - 1) {
     drawFinish = true;
