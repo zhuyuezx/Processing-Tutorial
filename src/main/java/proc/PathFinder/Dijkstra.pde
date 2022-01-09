@@ -40,10 +40,11 @@ void drawWindow() {
     if (current == c && !findPath)
       c.show(color(0, 255, 0, 150));
     else if (!c.visited || findPath)
-      c.show(color(50, 100));
+      c.show(color(20, 100));
     else 
     c.show(color(200, 0, 0, 150));
   }
+  start.show(color(0, 0, 200, 150));
   end.show(color(200, 0, 150));
   
   ArrayList<Cell> path = new ArrayList<Cell>();
@@ -71,11 +72,11 @@ void drawWindow() {
         endTrack = true;
       }
     }
-    pathCount++;
+    pathCount+=2;
     strokeWeight(2);
     
     if (endTrack) {
-      delay(3000);
+      delay(2000);
       reset();
     }
     return;

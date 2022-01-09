@@ -44,12 +44,13 @@ class Cell {
   }
 
   void addNeighbours() {
-    if (!walls[0] && j > 0)
-      neighbours.add(grid[index(i, j - 1)]);
+    neighbours = new ArrayList<Cell>();
     if (!walls[1] && i < cols - 1)
       neighbours.add(grid[index(i + 1, j)]);
     if (!walls[2] && j < rows - 1)
       neighbours.add(grid[index(i, j + 1)]);
+    if (!walls[0] && j > 0)
+      neighbours.add(grid[index(i, j - 1)]);
     if (!walls[3] && i > 0)
       neighbours.add(grid[index(i - 1, j)]);
   }

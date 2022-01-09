@@ -35,9 +35,10 @@ void drawWindowDFS() {
     else if (c.visited && !findPath) {
       c.show(color(255, 0, 0, 150));
     } else {
-      c.show(color(50, 100));
+      c.show(color(20, 100));
     }
   }
+  start.show(color(0, 0, 200, 150));
   end.show(color(200, 0, 150));
   
   ArrayList<Cell> path = new ArrayList<Cell>();
@@ -65,11 +66,11 @@ void drawWindowDFS() {
         endTrack = true;
       }
     }
-    pathCount++;
+    pathCount+=2;
     strokeWeight(2);
     
     if (endTrack) {
-      delay(3000);
+      delay(2000);
       reset();
     }
     return;
