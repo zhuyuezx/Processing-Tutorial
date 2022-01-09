@@ -6,6 +6,7 @@ Cell end;
 boolean drawFinish = false;
 boolean findPath = false;
 int pathCount = 0;
+int generateCount = 0;
 int methodCount = 0;
 
 Cell current;
@@ -24,16 +25,17 @@ int heuristic(Cell a, Cell b) {
 }
 
 void setup() {
+  //fullScreen();
   size(1000, 1000);
   cols = (int)(width / w);
   rows = (int)(height / w);
   grid = new Cell[cols * rows];
-  
+
   stack = new ArrayList<Cell>();
 
   for (int j = 0; j < rows; j++) {
     for (int i = 0; i < cols; i++) {
-      grid[i + j * rows] = new Cell(i, j);
+      grid[i + j * cols] = new Cell(i, j);
     }
   }
   current = grid[0];
@@ -49,36 +51,16 @@ void setup() {
 }
 
 void draw() {
+  push();
   background(20);
   strokeWeight(2);
   if (!drawFinish) {
-    for (int i = 0; i < grid.length; i++) {
-      grid[i].show(color(50, 100));
-    }
-    for (int i = 0; i < 10; i++) {
-      current.visited = true;
-      current.highlight();
-      Cell next = current.checkNeighbours();
-      if (next != null) {
-        next.visited = true;
-        stack.add(current);
-
-        removeWalls(current, next);
-
-        current = next;
-      } else if (stack.size() > 0) {
-        current = stack.remove(stack.size() - 1);
-      }
-      if (frameCount > 10 && stack.size() == 0) {
-        drawFinish = true;
-        for (Cell c : grid) {
-          c.addNeighbours();
-          c.visited = false;
-        }
-        start.visited = true;
-        return;
-      }
-    }
+    if (generateCount == 0) {
+      generateMaze();
+    } else if (generateCount == 1) {
+      randomGenerate();
+    } else
+      noLoop();
   } else {
     if (methodCount == 0)
       AStar();
@@ -92,8 +74,9 @@ void draw() {
       Dijkstra();
     else
       noLoop();
-    return;
   }
+  pop();
+  rec();
 }
 
 void removeWalls(Cell a, Cell b) {
@@ -117,10 +100,19 @@ void removeWalls(Cell a, Cell b) {
 
 void reset() {
   findPath = false;
+  frameCount = 0;
   pathCount = 0;
   methodCount++;
-  methodCount = methodCount % 5;
-  println(methodCount);
+  if (methodCount == 5) {
+    generateCount++;
+    drawFinish = false;
+    for (Cell c : grid) {
+      for (int wall = 0; wall < 4; wall++) 
+        c.walls[wall] = true;
+    }
+  }
+  //generateCount %= 2;
+  methodCount %= 5;
 
   current = grid[0];
   start = grid[0];
