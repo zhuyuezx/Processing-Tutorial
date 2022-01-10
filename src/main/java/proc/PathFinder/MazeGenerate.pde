@@ -2,7 +2,7 @@ void generateMaze() {
   for (int i = 0; i < grid.length; i++) {
       grid[i].show(color(20, 100));
     }
-  for (int n = 0; n < 10; n++) {
+  for (int n = 0; n < 20; n++) {
     current.visited = true;
     current.highlight();
     Cell next = current.checkNeighbours();

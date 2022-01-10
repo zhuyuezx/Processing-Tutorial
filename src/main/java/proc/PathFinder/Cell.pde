@@ -83,31 +83,31 @@ class Cell {
     }
 
     if (findPath) {
-    boolean endTrack = false;
-    
-    stroke(200, 0, 150);
-    strokeWeight(w / 2);
-    Cell track = current.previous;
-    line(current.i * w + w / 2, current.j * w + w / 2, 
-      track.i * w + w / 2, track.j * w + w / 2);
-    for (int n = 0; n < pathCount; n++) {
-      if (track.previous != null) {
-        line(track.i * w + w / 2, track.j * w + w / 2, 
-          track.previous.i * w + w / 2, track.previous.j * w + w / 2);
-        track = track.previous;
-      } else {
-        endTrack = true;
+      boolean endTrack = false;
+
+      stroke(200, 0, 150);
+      strokeWeight(w / 2);
+      Cell track = current.previous;
+      line(current.i * w + w / 2, current.j * w + w / 2, 
+        track.i * w + w / 2, track.j * w + w / 2);
+      for (int n = 0; n < pathCount; n++) {
+        if (track.previous != null) {
+          line(track.i * w + w / 2, track.j * w + w / 2, 
+            track.previous.i * w + w / 2, track.previous.j * w + w / 2);
+          track = track.previous;
+        } else {
+          endTrack = true;
+        }
       }
+      pathCount+=2;
+      strokeWeight(2);
+
+      if (endTrack) {
+        delay(2000);
+        reset();
+      }
+      return;
     }
-    pathCount+=2;
-    strokeWeight(2);
-    
-    if (endTrack) {
-      delay(2000);
-      reset();
-    }
-    return;
-  }
 
     noFill();
     stroke(255, 255, 0, 200);

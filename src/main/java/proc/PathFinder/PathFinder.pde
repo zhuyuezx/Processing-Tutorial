@@ -29,7 +29,7 @@ int heuristic(Cell a, Cell b) {
 }
 
 void setup() {
-  size(200, 200);
+  size(1200, 1000);
   cols = (int)(width / w);
   rows = (int)(height / w);
   grid = new Cell[rows * cols];
