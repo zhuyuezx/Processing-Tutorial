@@ -2,7 +2,8 @@ float angle;
 float angle2 = 0;
 
 public void settings() {
-  size(960, 720);
+  fullScreen();
+  //size(960, 720);
 }
 
 public void draw() {
@@ -28,4 +29,9 @@ public void draw() {
   angle2 += 1;
   pop();
   rec();
+}
+
+void keyPressed() {
+   if (key == ' ')
+     saveFrame("frame-####.jpg");
 }

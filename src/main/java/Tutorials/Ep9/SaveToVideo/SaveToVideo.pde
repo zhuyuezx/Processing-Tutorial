@@ -3,30 +3,22 @@ float angle;
 int mx = 80, my = 135;
 float scaleVar = 1;
 int resetCounter = 1;
-boolean initialize = false;
 
-public void settings() {
+public void setup() {
   size(1920, 1070, P3D);
+  rectMode(CENTER);
+  fill(255, 0, 0);
+  noStroke();
+
+  mx = (width - floor((float) width / (grid * 2)) * grid * 2) / 2;
+  my = (height - floor((float) height / (grid * 2)) * grid * 2) / 2;
 }
 
 public void draw() {
-  if (!initialize) {
-    rectMode(CENTER);
-    fill(255, 0, 0);
-    noStroke();
-
-    mx = (width - floor((float) width / (grid * 2)) * grid * 2) / 2;
-    //my = (height - floor((float) width / (grid * 2)) * grid * 2) / 2;
-    my = (height - floor((float) height / (grid * 2)) * grid * 2) / 2;
-
-    initialize = true;
-  }
-  
-  push();
+  //push();
   background(15, 20, 30);
 
   translate((float) width / 2, (float) height / 2);
-  //        scaleVar = map(mouseX, 0, width, (float) 0.1, 5);
   scaleVar = lerp(scaleVar, map(angle, 0, 180, 
     (float) (resetCounter - 0.7), resetCounter), (float)0.1);
   scale(scaleVar);
@@ -81,7 +73,11 @@ public void draw() {
     angle = 0;
     resetCounter += 1;
   }
-  
-  pop();
-  rec();
+  //pop();
+  //rec();
+}
+
+void keyPressed() {
+   if (key == ' ') 
+     saveFrame("frame-####.jpg");
 }

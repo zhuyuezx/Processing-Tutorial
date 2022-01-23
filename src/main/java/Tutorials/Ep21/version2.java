@@ -22,7 +22,7 @@ public class version2 extends PApplet {
         }
         background(255);
         xStep = map(xStepCounter, 0, width, width, 15);
-        if (xStepCounter < width) xStepCounter++;
+        if (xStepCounter < width) xStepCounter+=2;
 
         strokeWeight(xStep / 2);
         translate((float) width / 2 - 100, (float) height / 2);
@@ -34,7 +34,7 @@ public class version2 extends PApplet {
         for (int x = -width / 2; x < width / 2; x += xStep) {
             line(x, (float) -height / 2, x, (float) height / 2);
         }
-        if (xStepCounter == width) angle += 0.1;
+        if (xStepCounter >= width) angle += 0.1;
     }
 
     public static void main(String[] args) {

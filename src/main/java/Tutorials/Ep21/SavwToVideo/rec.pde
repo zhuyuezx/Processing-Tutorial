@@ -9,6 +9,6 @@ void rec() {
     videoExport.setFrameRate(30);
     videoExport.startMovie();
   }
-  
-  videoExport.saveFrame();
+  if (frameCount % 3 == 0)
+    videoExport.saveFrame();
 }
