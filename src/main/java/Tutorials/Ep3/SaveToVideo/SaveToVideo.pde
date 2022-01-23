@@ -9,9 +9,10 @@ color[] colArray = {
     };
     int grid = 100;
     int margin = 100;
+    int squareCount = 2 * margin;
 
     void setup() {
-        size(800, 800);
+        size(960, 720);
         //noLoop();
     }
 
@@ -24,8 +25,8 @@ color[] colArray = {
 
         float size = (float)(grid * 0.6);
 
-        for(int i = 2 *margin; i < width - margin; i += grid) {
-            for (int j = 2 * margin; j < height - margin; j += grid) {
+        for(int i = 2 *margin; i < width - margin && i <= squareCount; i += grid) {
+            for (int j = 2 * margin; j < height - margin && j <= squareCount; j += grid) {
                 int colArrayNum = (int)random(7);
                 stroke(colArray[colArrayNum]);
                 strokeWeight(3);
@@ -34,7 +35,9 @@ color[] colArray = {
         }
         pop();
         rec();
-        delay((int)random(200, 400));
+        delay((int)random(200, 500));
+        squareCount += grid;
+        squareCount = constrain(squareCount, 0, width);
     }
 
     public void generateBlock(int overLay, float size, int i, int j) {
