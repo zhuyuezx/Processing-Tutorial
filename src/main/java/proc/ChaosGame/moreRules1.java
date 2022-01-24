@@ -60,6 +60,11 @@ public class moreRules1 extends PApplet {
         }
     }
 
+    public void keyPressed() {
+        if (key == ' ')
+            saveFrame("/src/main/java/proc/ChaosGame/frame-####.jpg");
+    }
+
     public static void main(String[] args) {
         PApplet.main(moreRules1.class.getName());
     }

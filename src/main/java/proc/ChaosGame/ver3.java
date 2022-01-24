@@ -64,6 +64,11 @@ public class ver3 extends PApplet {
         }
     }
 
+    public void keyPressed() {
+        if (key == ' ')
+            saveFrame("/src/main/java/proc/ChaosGame/frame-####.jpg");
+    }
+
     public static void main(String[] args) {
         PApplet.main(ver3.class.getName());
     }

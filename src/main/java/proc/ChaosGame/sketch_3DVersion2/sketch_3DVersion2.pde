@@ -47,6 +47,7 @@ public void setup() {
 }
 
 public void draw() {
+  push();
   //println(current.get(current.size() - 1));
   background(0);
   for (int i = 0; i < numOfPoint; i++) {
@@ -81,6 +82,8 @@ public void draw() {
       ));
     colorInfo.add(index);
   }
+  pop();
+  rec();
 }
 
 void drawCurr() {

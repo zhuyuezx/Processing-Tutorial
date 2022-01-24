@@ -69,6 +69,11 @@ public class moreRules2 extends PApplet {
         return true;
     }
 
+    public void keyPressed() {
+        if (key == ' ')
+            saveFrame("frame-####.jpg");
+    }
+
     public static void main(String[] args) {
         PApplet.main(moreRules2.class.getName());
     }

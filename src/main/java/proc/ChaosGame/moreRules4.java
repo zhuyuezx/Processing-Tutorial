@@ -72,6 +72,11 @@ public class moreRules4 extends PApplet {
         }
     }
 
+    public void keyPressed() {
+        if (key == ' ')
+            saveFrame("frame-####.jpg");
+    }
+
     public boolean checkValid(int r) {
         return true;
     }

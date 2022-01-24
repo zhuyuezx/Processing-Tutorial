@@ -16,7 +16,7 @@ void draw() {
   for (int y = 0; y < grid.length; y++) {
     for (int x = 0; x < grid[0].length; x++) {
       noiseValue = noise(x * strength, y * strength, angle * strength);
-      grid[y][x] = PVector.fromAngle(noiseValue * 2 * TWO_PI);
+      grid[y][x] = PVector.fromAngle(noiseValue * 10 * TWO_PI);
       PVector curr = grid[y][x];
       stroke(0);
       strokeWeight(5);

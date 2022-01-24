@@ -8,10 +8,10 @@ public class ver2 extends PApplet {
     boolean initialize = false;
     PVector[] points;
 
-    int numberOfNodes = 5;
+    int numberOfNodes = 4;
     float percent = 0.5F;
     PVector current;
-    PVector previous;
+    int previous;
 
     public void settings() {
         size(1000, 1000);
@@ -52,13 +52,18 @@ public class ver2 extends PApplet {
             int r = (int) random(points.length);
             stroke(255 / numberOfNodes * r, 200, 255);
             PVector next = points[r];
-            if (next != previous) {
+            if (r != (previous + 2) % 4) {
                 current.x = lerp(current.x, next.x, percent);
                 current.y = lerp(current.y, next.y, percent);
                 point(current.x, current.y);
+                previous = r;
             }
-            previous = next;
         }
+    }
+
+    public void keyPressed() {
+        if (key == ' ')
+            saveFrame("/src/main/java/proc/ChaosGame/frame-####.jpg");
     }
 
     public static void main(String[] args) {
