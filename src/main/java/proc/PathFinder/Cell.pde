@@ -4,9 +4,9 @@ class Cell {
   boolean[] walls = new boolean[]{true, true, true, true};
   ArrayList<Cell> neighbours;
   boolean visited = false;
-  int f = 0, g = 0;
+  float f = 0, g = 0;
   int dist = rows * cols + 1;
-  int heuristic = 0;
+  float heuristic = 0;
 
   Cell previous = null;
 
