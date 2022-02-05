@@ -24,8 +24,9 @@ boolean findPath = false;
 
 ArrayList<Cell> stack;
 
-int heuristic(Cell a, Cell b) {
-  return abs(a.i - b.i) + abs(a.j - b.j);
+float heuristic(Cell a, Cell b) {
+  return sqrt((a.i - b.i) * (a.i - b.i)) + sqrt((a.j - b.j) * (a.j - b.j));
+  //return abs(a.i - b.i) + abs(a.j - b.j);
 }
 
 void setup() {
@@ -57,9 +58,9 @@ void draw() {
   background(20);
   strokeWeight(2);
   if (!drawFinish) {
-    if (generateCount == 0) {
+    if (generateCount == 1) {
       generateMaze();
-    } else if (generateCount == 1) {
+    } else if (generateCount == 0) {
       randomGenerate();
     } else
       noLoop();

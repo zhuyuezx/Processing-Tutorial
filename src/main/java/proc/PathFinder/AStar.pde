@@ -2,8 +2,10 @@ void AStar() {
   if (route.size() > 0) {
     int winner = 0;
     for (int i = 0; i < route.size(); i++) {
-      if (route.get(i).f < route.get(winner).f) 
+      if (route.get(i).f < route.get(winner).f || 
+      (route.get(i).f == route.get(winner).f && route.get(i).heuristic < route.get(i).heuristic)) {
         winner = i;
+      }
     }
     current = route.get(winner);
 
@@ -19,7 +21,7 @@ void AStar() {
     ArrayList<Cell> neighbours = current.neighbours;
     for (Cell neighbour : neighbours) {
       if (!closedSet.contains(neighbour)) {
-        int tempG = current.g + 1;
+        float tempG = current.g + 1;
 
         boolean newPath = false;
         if (route.contains(neighbour)) {

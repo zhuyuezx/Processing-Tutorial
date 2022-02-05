@@ -2,8 +2,8 @@ void randomGenerate() {
   removeWalls(grid[0], grid[1]);
   removeWalls(grid[grid.length - 1], grid[grid.length - 2]);
 
-  for (int n = 0; n < 3; n++) {
-    Cell current = grid[frameCount * 3 - 3 + n];
+  for (int n = 0; n < 10; n++) {
+    Cell current = grid[frameCount * 10 - 10 + n];
     int i = current.i, j = current.j;
     ArrayList<Cell> around = new ArrayList<Cell>();
     int top = current.index(i, j - 1);
@@ -28,7 +28,7 @@ void randomGenerate() {
   for (Cell c : grid) 
     c.show(color(20, 100));
 
-  if (frameCount > grid.length / 3 - 1) {
+  if (frameCount > grid.length / 10 - 1) {
     drawFinish = true;
     for (Cell c : grid) {
       c.addNeighbours();

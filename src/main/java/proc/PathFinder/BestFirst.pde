@@ -1,9 +1,9 @@
 void BestFirst() {
   if (route.size() > 0) {
     int winner = 0;
-    int minDist = heuristic(route.get(winner), end);
+    float minDist = heuristic(route.get(winner), end);
     for (int i = 0; i < route.size(); i++) {
-      int dist = heuristic(route.get(i), end);
+      float dist = heuristic(route.get(i), end);
       if (dist < minDist) {
         minDist = dist;
         winner = i;
