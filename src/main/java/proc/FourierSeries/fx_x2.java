@@ -2,9 +2,8 @@ package proc.FourierSeries;
 
 import processing.core.PApplet;
 
-public class fx_x extends PApplet {
-
-    int level = 0;
+public class fx_x2 extends PApplet {
+    int level = 1;
     float l = TWO_PI;
     boolean initialized = false;
     float[] wave;
@@ -18,14 +17,17 @@ public class fx_x extends PApplet {
     }
 
     public void draw() {
-//        if (initialized)
-//            return;
         if (!initialized) {
             background(0);
             stroke(200);
             strokeWeight(3);
             wave = new float[height];
             after = new float[height];
+            for (int i = 0; i < height; i++) {
+                int constant = -height / 3;
+                wave[i] = constant;
+                after[i] = constant;
+            }
             initialized = true;
         }
         pushMatrix();
@@ -57,25 +59,12 @@ public class fx_x extends PApplet {
         text(msg, 40, 40, 400, 40);
     }
 
-    public void calculate_wave() {
-        for (int i = 0; i < level; i++) {
-            int n = i + 1;
-            int sign = (n % 2 == 0) ? 1 : -1;
-            float radius = 100 * (2 * l / (n * PI));
-            for (int curr = 0; curr < height; curr++) {
-                wave[curr] += sign * radius * sin(n * PI * (0.01f * curr) / l);
-            }
-        }
-
-    }
-
     public void calculate_after(int level) {
-        int n = level + 1;
-        int sign = (n % 2 == 0) ? 1 : -1;
-        float radius = (height / l) * (2 * l / (n * PI));
+        int sign = (level % 2 == 0) ? 1 : -1;
+        float radius = (height / l / l) * (4 * l * l / (level * level * PI * PI));
         for (int curr = 0; curr < height; curr++) {
             //after[curr] = wave[curr];
-            after[curr] += sign * radius * sin(n * PI * (0.0058f * curr) / l);
+            after[curr] -= sign * radius * cos(level * PI * (0.0058f * curr) / l);
         }
     }
 
@@ -86,6 +75,6 @@ public class fx_x extends PApplet {
     }
 
     public static void main(String[] args) {
-        PApplet.main(fx_x.class.getName());
+        PApplet.main(fx_x2.class.getName());
     }
 }
