@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 public class svg_interpreter extends PApplet {
 
-    int numVectors = 101;
-    int scale = 3;
+    int numVectors = 401;
+    float scale = 3f;
     boolean initialized = false;
 
     ArrayList<PVector> vectors = new ArrayList();
@@ -28,8 +28,9 @@ public class svg_interpreter extends PApplet {
         fullScreen();
 
         try {
-            File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/PI_copy.svg");
-            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/Pi-symbol.svg");
+            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/PI_copy.svg");
+            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Pi-symbol.svg");
+            File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/aqua.svg");
             Scanner myReader = new Scanner(svg);
             while (myReader.hasNextLine()) {
                 data += myReader.nextLine();
@@ -41,7 +42,7 @@ public class svg_interpreter extends PApplet {
             e.printStackTrace();
         }
         String path = data.substring(data.indexOf("<path"));
-        path = path.substring(path.indexOf("d=\"") + 3);
+        path = path.substring(path.indexOf(" d=\"") + 4);
         path = path.substring(0, path.indexOf("\""));
         //print(path);
 
@@ -72,11 +73,8 @@ public class svg_interpreter extends PApplet {
 
     public void samplePoints(ArrayList<String> curves) {
         PVector lastPoint = new PVector(0, 0);
-        PVector firstPoint = new PVector(0, 0);
         for (int i = 0; i < curves.size(); ) {
             String curr = curves.get(i);
-            if (i == 0 && !curr.equals("z"))
-                firstPoint = new PVector(Float.parseFloat(curves.get(i + 1)), Float.parseFloat(curves.get(i + 2)));
             if (curr.equals("M")) {
                 lastPoint = new PVector(Float.parseFloat(curves.get(i + 1)), Float.parseFloat(curves.get(i + 2)));
                 i += 3;
@@ -140,7 +138,7 @@ public class svg_interpreter extends PApplet {
             } else if (curr.equals("C")) {
                 PVector p2 = new PVector(Float.parseFloat(curves.get(i + 1)), Float.parseFloat(curves.get(i + 2)));
                 PVector p3 = new PVector(Float.parseFloat(curves.get(i + 3)), Float.parseFloat(curves.get(i + 4)));
-                PVector p4 = new PVector(Float.parseFloat(curves.get(i + 4)), Float.parseFloat(curves.get(i + 5)));
+                PVector p4 = new PVector(Float.parseFloat(curves.get(i + 5)), Float.parseFloat(curves.get(i + 6)));
 
                 for (float t = 0; t < 1; t += 1 / dist(lastPoint.x, lastPoint.y, p2.x, p2.y)) {
                     points.add(PVector.mult(lastPoint, (1 - t) * (1 - t) * (1 - t)).
@@ -150,14 +148,6 @@ public class svg_interpreter extends PApplet {
                 }
                 lastPoint.set(p4);
                 i += 7;
-//            } else if (curr.equals("z")) {
-//                PVector p2 = new PVector(firstPoint.x, firstPoint.y);
-//
-//                for (float t = 0; t < 1; t += 1 / dist(lastPoint.x, lastPoint.y, p2.x, p2.y)) {
-//                    points.add(PVector.mult(lastPoint, 1 - t).add(PVector.mult(p2, t)));
-//                }
-//                lastPoint.set(p2);
-//                i += 3;
             }
             else {
                 i++;
@@ -197,7 +187,7 @@ public class svg_interpreter extends PApplet {
     public void drawVectors() {
         noFill();
         strokeWeight(2);
-        stroke(150);
+        stroke(150, 100);
 
         //PVector lastPoint = new PVector(0, 0);
         //PVector lastPoint = new PVector(width / scale / 2, height / scale / 2);
@@ -208,10 +198,18 @@ public class svg_interpreter extends PApplet {
             line(lastPoint.x * scale, lastPoint.y * scale,
                     (lastPoint.x + vectors.get(n).x) * scale,
                     (lastPoint.y + vectors.get(n).y) * scale);
+            float r = 2 * sqrt(vectors.get(n).x * scale * vectors.get(n).x * scale +
+                    vectors.get(n).y * scale * vectors.get(n).y * scale);
+            ellipse(lastPoint.x * scale, lastPoint.y * scale,
+                    r, r);
             lastPoint.add(vectors.get(n));
             line(lastPoint.x * scale, lastPoint.y * scale,
                     (lastPoint.x + nVectors.get(n).x) * scale,
                     (lastPoint.y + nVectors.get(n).y) * scale);
+            r = 2 * sqrt(nVectors.get(n).x * scale * nVectors.get(n).x * scale +
+                    nVectors.get(n).y * scale * nVectors.get(n).y * scale);
+            ellipse(lastPoint.x * scale, lastPoint.y * scale,
+                    r, r);
             lastPoint.add(nVectors.get(n));
         }
         pen.set(lastPoint);
