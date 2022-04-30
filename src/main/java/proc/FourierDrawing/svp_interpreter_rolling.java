@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class svg_interpreter extends PApplet {
 
-    int numVectors = 501;
-    float scale = 3f;
+public class svp_interpreter_rolling extends PApplet{
+    int numVectors = 101;
+    float scale = 10f;
+    float origScale = scale;
     boolean initialized = false;
-    float rotateSpeed = 0.01f;
+    float rotateSpeed = 0.001f;
 
     ArrayList<PVector> vectors = new ArrayList();
     ArrayList<PVector> nVectors = new ArrayList();
@@ -29,14 +30,14 @@ public class svg_interpreter extends PApplet {
         fullScreen();
 
         try {
-            File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/PI_copy.svg");
+            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/PI_copy.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Pi-symbol.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/aqua.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Apple_logo_black.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/twitter-line.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/twitter-line1.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/france-23502.svg");
-            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/China_contour.svg");
+            File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/China_contour.svg");
             Scanner myReader = new Scanner(svg);
             while (myReader.hasNextLine()) {
                 data += myReader.nextLine();
@@ -87,47 +88,74 @@ public class svg_interpreter extends PApplet {
 
     public void drawVectors() {
         noFill();
-        strokeWeight(2);
-        stroke(150, 100);
 
         PVector lastPoint = new PVector(width / 2 / scale, height / 2 / scale);
         for (int n = 1; n < numVectors; n++) {
+            lastPoint.add(vectors.get(n));
+            lastPoint.add(nVectors.get(n));
+        }
+        pen.set(lastPoint);
+
+        pushMatrix();
+        if (!(origScale > 1 && scale <= 1)) {
+            PVector locate = PVector.mult(pen, scale);
+            translate(width / 2 - locate.x, height / 2 - locate.y);
+        }
+        lastPoint = new PVector(width / 2 / scale, height / 2 / scale);
+        for (int n = 1; n < numVectors; n++) {
+            strokeWeight(1);
+            stroke(150, 150);
             line(lastPoint.x * scale, lastPoint.y * scale,
                     (lastPoint.x + vectors.get(n).x) * scale,
                     (lastPoint.y + vectors.get(n).y) * scale);
 
             float r = 2 * sqrt(vectors.get(n).x * scale * vectors.get(n).x * scale +
                     vectors.get(n).y * scale * vectors.get(n).y * scale);
+            strokeWeight(3);
+            stroke(150, 50);
             ellipse(lastPoint.x * scale, lastPoint.y * scale,
                     r, r);
 
             lastPoint.add(vectors.get(n));
 
+            strokeWeight(1);
+            stroke(150, 150);
             line(lastPoint.x * scale, lastPoint.y * scale,
                     (lastPoint.x + nVectors.get(n).x) * scale,
                     (lastPoint.y + nVectors.get(n).y) * scale);
 
             r = 2 * sqrt(nVectors.get(n).x * scale * nVectors.get(n).x * scale +
                     nVectors.get(n).y * scale * nVectors.get(n).y * scale);
+            strokeWeight(3);
+            stroke(150, 50);
             ellipse(lastPoint.x * scale, lastPoint.y * scale,
                     r, r);
 
             lastPoint.add(nVectors.get(n));
         }
-        pen.set(lastPoint);
     }
 
     public void drawPath() {
-        if (route.size() <= TWO_PI / rotateSpeed + 10)
-            route.add(PVector.mult(pen, scale));
-        //route.add(pen);
+        if (route.size() <= TWO_PI / rotateSpeed + 1)
+            route.add(pen.copy());
+            //route.add(PVector.mult(pen, scale));
+        else {
+            if (scale > 1) {
+                scale -= 0.01;
+                for (PVector temp : route) {
+                    temp.x += width / 2 / scale - width / 2 / (scale + 0.01);
+                    temp.y += height / 2 / scale - height / 2 / (scale + 0.01);
+                }
+            }
+        }
         stroke(255, 255, 0);
         strokeWeight(3);
         beginShape();
         for (PVector p : route) {
-            vertex(p.x, p.y);
+            vertex(p.x * scale, p.y * scale);
         }
         endShape();
+        popMatrix();
     }
 
     public void rotateVectors() {
@@ -252,7 +280,7 @@ public class svg_interpreter extends PApplet {
             } else if (curr.equals("H")) {
                 lastPoint.x = Float.parseFloat(curves.get(i + 1));
                 i += 2;
-            } else if (curr.equals("M")) {
+            }else if (curr.equals("M")) {
                 lastPoint = new PVector(Float.parseFloat(curves.get(i + 1)), Float.parseFloat(curves.get(i + 2)));
                 i += 3;
             } else if (curr.equals("m")) {
@@ -411,7 +439,6 @@ public class svg_interpreter extends PApplet {
     }
 
     public static void main(String[] args) {
-        PApplet.main(svg_interpreter.class.getName());
+        PApplet.main(svp_interpreter_rolling.class.getName());
     }
-
 }
