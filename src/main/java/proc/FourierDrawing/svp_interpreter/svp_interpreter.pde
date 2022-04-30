@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 int numVectors = 101;
 int scale = 20;
+boolean initialized = false;
 
 ArrayList<PVector> vectors = new ArrayList();
 ArrayList<PVector> nVectors = new ArrayList();
@@ -11,12 +12,12 @@ ArrayList<PVector> points = new ArrayList();
 
 String data = "";
 ArrayList<String> commands;
-PVector pen;
+PVector pen = new PVector(0, 0);
 ArrayList<PVector> route = new ArrayList();
 
-void setup() {
+public void settings() {
   size(800, 800);
-  
+
   try {
     File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/PI_copy.svg");
     Scanner myReader = new Scanner(svg);
@@ -25,19 +26,20 @@ void setup() {
     }
     //print(data);
     myReader.close();
-  } catch (FileNotFoundException e) {
+  } 
+  catch (FileNotFoundException e) {
     print("An error occured\n");
     e.printStackTrace();
   }
   String path = data.substring(data.indexOf("<path"));
   path = path.substring(path.indexOf("\"") + 1, path.indexOf("\"style="));
   //print(path);
-  
+
   commands = new ArrayList();
   String prev = "";
   for (int i = 0; i < path.length(); i++) {
     char curr = path.charAt(i);
-    int ascii = (int)curr;
+    int ascii = curr;
     if ((65 <= ascii && ascii <= 90) || (97 <= ascii && ascii <= 122)) {
       commands.add(prev);
       prev = "";
@@ -54,88 +56,87 @@ void setup() {
   for (int i = 0; i < commands.size(); i++) {
     print(commands.get(i) + "\n");
   }
-  
-  samplePoints(commands);
-  setVectors();
 }
 
-void samplePoints(ArrayList<String> curves) {
+public void samplePoints(ArrayList<String> curves) {
   PVector lastPoint = new PVector(0, 0);
-  for (int i = 0; i < curves.size();) {
+  for (int i = 0; i < curves.size(); ) {
     String curr = curves.get(i);
     if (curr.equals("M")) {
-      lastPoint = new PVector(float(curves.get(i + 1)), float(curves.get(i + 2)));
+      lastPoint = new PVector(Float.parseFloat(curves.get(i + 1)), Float.parseFloat(curves.get(i + 2)));
       i += 3;
-    } 
-    else if (curr.equals("l")) {
+    } else if (curr.equals("l")) {
       PVector p2 = PVector.add(lastPoint, 
-      new PVector(float(curves.get(i + 1)), float(curves.get(i + 2))));
-      
+        new PVector(Float.parseFloat(curves.get(i + 1)), Float.parseFloat(curves.get(i + 2))));
+
       for (float t = 0; t < 1; t += 1 / dist(lastPoint.x, lastPoint.y, p2.x, p2.y)) {
         points.add(PVector.mult(lastPoint, 1 - t).add(PVector.mult(p2, t)));
       }
       lastPoint.set(p2);
       i += 3;
-    } 
-    else if (curr.equals("L")) {
-      PVector p2 = new PVector(float(curves.get(i + 1)), float(curves.get(i + 2)));
-      
+    } else if (curr.equals("L")) {
+      PVector p2 = new PVector(Float.parseFloat(curves.get(i + 1)), Float.parseFloat(curves.get(i + 2)));
+
       for (float t = 0; t < 1; t += 1 / dist(lastPoint.x, lastPoint.y, p2.x, p2.y)) {
         points.add(PVector.mult(lastPoint, 1 - t).add(PVector.mult(p2, t)));
       }
       lastPoint.set(p2);
       i += 3;
-    } 
-    else if (curr.equals("q")) {
+    } else if (curr.equals("q")) {
       PVector control = PVector.add(lastPoint, 
-      new PVector(float(curves.get(i + 1)), float(curves.get(i + 2))));
+        new PVector(Float.parseFloat(curves.get(i + 1)), Float.parseFloat(curves.get(i + 2))));
       PVector p2 = PVector.add(lastPoint, 
-      new PVector(float(curves.get(i + 3)), float(curves.get(i + 4))));
-      
+        new PVector(Float.parseFloat(curves.get(i + 3)), Float.parseFloat(curves.get(i + 4))));
+
       for (float t = 0; t < 1; t += 1 / dist(lastPoint.x, lastPoint.y, p2.x, p2.y)) {
         points.add(PVector.mult(lastPoint, (1 - t) * (1 - t)).
-        add(PVector.mult(control, 2 * t * (1 - t))).
-        add(PVector.mult(p2, t * t)));
+          add(PVector.mult(control, 2 * t * (1 - t))).
+          add(PVector.mult(p2, t * t)));
       }
       lastPoint.set(p2);
       i += 5;
+    } else {
+      i++;
     }
   }
 }
 
-void setVectors() {
+public void setVectors() {
   for (int n = 0; n < numVectors; n++) {
     PVector total = new PVector(0, 0);
-    for (float t = 0; t <= 1; t += 1.0 / float(points.size())) {
-      PVector v = points.get(int(t * points.size()));
+    for (float t = 0; t <= 1; t += 1.0 / (float) points.size()) {
+      PVector v = points.get((int) (t * points.size()));
       float r = sqrt(v.x * v.x + v.y * v.y);
       float theta = atan(v.y / v.x) - n * TWO_PI * t;
       total.add(new PVector(r * cos(theta), r * sin(theta)));
     }
     total.div(points.size());
-    vectors.set(n, total);
+    //vectors.set(n, total);
+    vectors.add(total);
   }
   nVectors.add(new PVector(0, 0));
   for (int n = 1; n < numVectors; n++) {
     PVector total = new PVector(0, 0);
-    for (float t = 0; t <= 1; t += 1.0 / float(points.size())) {
-      PVector v = points.get(int(t * points.size()));
+    for (float t = 0; t <= 1; t += 1.0 / (float) points.size()) {
+      PVector v = points.get((int) (t * points.size()));
       float r = sqrt(v.x * v.x + v.y * v.y);
       float theta = atan(v.y / v.x) + n * TWO_PI * t;
       total.add(new PVector(r * cos(theta), r * sin(theta)));
     }
     total.div(points.size());
-    nVectors.set(n, total);
+    //nVectors.set(n, total);
+    nVectors.add(total);
   }
+  print("here");
 }
 
-void drawVectors() {
+public void drawVectors() {
   noFill();
   strokeWeight(1);
   stroke(150);
 
   PVector lastPoint = new PVector(width / scale / 2, height / scale / 2);
-  //beginShape();
+  beginShape();
   for (int n = 0; n < numVectors; n++) {
     line(lastPoint.x * scale, lastPoint.y * scale, 
       (lastPoint.x + vectors.get(n).x) * scale, 
@@ -149,25 +150,31 @@ void drawVectors() {
   pen.set(lastPoint);
 }
 
-void drawPath() {
+public void drawPath() {
   route.add(PVector.mult(pen, scale));
+  //route.add(pen);
   stroke(255, 255, 0);
   strokeWeight(3);
   beginShape();
-  for (PVector p: route) {
+  for (PVector p : route) {
     vertex(p.x, p.y);
   }
   endShape();
 }
 
-void rotateVectors() {
+public void rotateVectors() {
   for (int n = 0; n < numVectors; n++) {
-    vectors.get(n).rotate(n * 0.01);
-    nVectors.get(n).rotate(-n * 0.01);
+    vectors.get(n).rotate(n * 0.01f);
+    nVectors.get(n).rotate(-n * 0.01f);
   }
 }
 
-void draw() {
+public void draw() {
+  if (!initialized) {
+    samplePoints(commands);
+    setVectors();
+    initialized = true;
+  }
   background(0);
   rotateVectors();
   drawVectors();
