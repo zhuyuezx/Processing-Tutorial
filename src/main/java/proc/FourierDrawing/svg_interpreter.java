@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 public class svg_interpreter extends PApplet {
 
-    int numVectors = 501;
-    float scale = 3f;
+    int numVectors = 101;
+    float scale = 0.5f;
     boolean initialized = false;
     float rotateSpeed = 0.01f;
 
@@ -29,7 +29,7 @@ public class svg_interpreter extends PApplet {
         fullScreen();
 
         try {
-            File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/PI_copy.svg");
+            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/PI_copy.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Pi-symbol.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/aqua.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Apple_logo_black.svg");
@@ -37,9 +37,12 @@ public class svg_interpreter extends PApplet {
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/twitter-line1.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/france-23502.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/China_contour.svg");
+            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/world.svg");
+            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Russia.svg");
+            File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Xi.svg");
             Scanner myReader = new Scanner(svg);
             while (myReader.hasNextLine()) {
-                data += myReader.nextLine();
+                data += myReader.nextLine() + '\n';
             }
             //print(data);
             myReader.close();
@@ -162,7 +165,7 @@ public class svg_interpreter extends PApplet {
                 res.add(Character.toString(curr));
             } else if (48 <= ascii && ascii <= 57) { // digit
                 prev += curr;
-            } else if (ascii == 32 || ascii == 44) { // space or comma
+            } else if (ascii == 32 || ascii == 44 || curr == '\n') { // space or comma
                 if (!prev.equals(""))
                     res.add(prev);
                 prev = "";

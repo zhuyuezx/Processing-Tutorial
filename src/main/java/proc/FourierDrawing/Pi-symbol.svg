@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="568.88px" width="588.42px">
 
-<path style="fill:none; stroke:black"
+<path style="fill:#ffffff; stroke:black"
       d="
       M 10.499686,177.03840
       L 31.174931,178.56990
@@ -19,6 +19,7 @@
       L 577.92030,98.166171
       L 577.15455,11.636437
       C 13.807491,8.9075799 85.312284,-2.1366151 10.499686,177.03840
+      L 10.499686,177.03840
       z
 " />
 

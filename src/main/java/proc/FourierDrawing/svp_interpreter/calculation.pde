@@ -20,7 +20,9 @@ void drawVectors() {
   translate(width / 2 - locate.x, height / 2 - locate.y);
   lastPoint = new PVector(width / 2 / scale, height / 2 / scale);
   for (int n = 1; n < numVectors; n++) {
-    strokeWeight(1);
+    float sw = map(n, 1, numVectors, 5, -15);
+    if (sw <= 0.5) sw = 0.5;
+    strokeWeight(sw);
     stroke(150, 150);
     line(lastPoint.x * scale, lastPoint.y * scale, 
       (lastPoint.x + vectors.get(n).x) * scale, 
@@ -28,14 +30,14 @@ void drawVectors() {
 
     float r = 2 * sqrt(vectors.get(n).x * scale * vectors.get(n).x * scale +
       vectors.get(n).y * scale * vectors.get(n).y * scale);
-    strokeWeight(3);
-    stroke(150, 50);
+    strokeWeight(2);
+    stroke(173,216,230, 60);
     ellipse(lastPoint.x * scale, lastPoint.y * scale, 
       r, r);
 
     lastPoint.add(vectors.get(n));
 
-    strokeWeight(1);
+    strokeWeight(sw);
     stroke(150, 150);
     line(lastPoint.x * scale, lastPoint.y * scale, 
       (lastPoint.x + nVectors.get(n).x) * scale, 
@@ -43,8 +45,8 @@ void drawVectors() {
 
     r = 2 * sqrt(nVectors.get(n).x * scale * nVectors.get(n).x * scale +
       nVectors.get(n).y * scale * nVectors.get(n).y * scale);
-    strokeWeight(3);
-    stroke(150, 50);
+    strokeWeight(2);
+    stroke(173,216,230, 60);
     ellipse(lastPoint.x * scale, lastPoint.y * scale, 
       r, r);
 

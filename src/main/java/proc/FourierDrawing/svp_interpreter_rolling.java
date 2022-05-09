@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 
-public class svp_interpreter_rolling extends PApplet{
-    int numVectors = 101;
+public class svp_interpreter_rolling extends PApplet {
+    int numVectors = 201;
     float scale = 10f;
     float origScale = scale;
     boolean initialized = false;
-    float rotateSpeed = 0.001f;
+    float rotateSpeed = 0.005f;
 
     ArrayList<PVector> vectors = new ArrayList();
     ArrayList<PVector> nVectors = new ArrayList();
@@ -37,10 +37,14 @@ public class svp_interpreter_rolling extends PApplet{
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/twitter-line.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/twitter-line1.svg");
             //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/france-23502.svg");
-            File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/China_contour.svg");
+            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/China_contour.svg");
+            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/world.svg");
+            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/australia.svg");
+            //File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/britain.svg");
+            File svg = new File("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Russia.svg");
             Scanner myReader = new Scanner(svg);
             while (myReader.hasNextLine()) {
-                data += myReader.nextLine();
+                data += myReader.nextLine() + '\n';
             }
             //print(data);
             myReader.close();
@@ -97,10 +101,8 @@ public class svp_interpreter_rolling extends PApplet{
         pen.set(lastPoint);
 
         pushMatrix();
-        if (!(origScale > 1 && scale <= 1)) {
-            PVector locate = PVector.mult(pen, scale);
-            translate(width / 2 - locate.x, height / 2 - locate.y);
-        }
+        PVector locate = PVector.mult(pen, scale);
+        translate(width / 2 - locate.x, height / 2 - locate.y);
         lastPoint = new PVector(width / 2 / scale, height / 2 / scale);
         for (int n = 1; n < numVectors; n++) {
             strokeWeight(1);
@@ -190,7 +192,7 @@ public class svp_interpreter_rolling extends PApplet{
                 res.add(Character.toString(curr));
             } else if (48 <= ascii && ascii <= 57) { // digit
                 prev += curr;
-            } else if (ascii == 32 || ascii == 44) { // space or comma
+            } else if (ascii == 32 || ascii == 44 || curr == '\n') { // space or comma
                 if (!prev.equals(""))
                     res.add(prev);
                 prev = "";
@@ -221,17 +223,26 @@ public class svp_interpreter_rolling extends PApplet{
     public void commandsAutoFill() {
         ArrayList<String> temp = new ArrayList<>();
         HashMap<String, Integer> pool = new HashMap<String, Integer>() {{
-            put("m", 3); put("M", 3); put("z", 1);
-            put("v", 2); put("V", 2);
-            put("h", 2); put("H", 2);
-            put("l", 3); put("L", 3);
-            put("q", 5); put("Q", 5);
-            put("t", 3); put("T", 3);
-            put("c", 7); put("C", 7);
-            put("s", 5); put("S", 5);
+            put("m", 3);
+            put("M", 3);
+            put("z", 1);
+            put("v", 2);
+            put("V", 2);
+            put("h", 2);
+            put("H", 2);
+            put("l", 3);
+            put("L", 3);
+            put("q", 5);
+            put("Q", 5);
+            put("t", 3);
+            put("T", 3);
+            put("c", 7);
+            put("C", 7);
+            put("s", 5);
+            put("S", 5);
         }};
         String lastCommand = null;
-        for (int i = 0; i < commands.size();) {
+        for (int i = 0; i < commands.size(); ) {
             String curr = commands.get(i);
             int val = pool.getOrDefault(curr, -1);
             if (val == -1) {
@@ -280,7 +291,7 @@ public class svp_interpreter_rolling extends PApplet{
             } else if (curr.equals("H")) {
                 lastPoint.x = Float.parseFloat(curves.get(i + 1));
                 i += 2;
-            }else if (curr.equals("M")) {
+            } else if (curr.equals("M")) {
                 lastPoint = new PVector(Float.parseFloat(curves.get(i + 1)), Float.parseFloat(curves.get(i + 2)));
                 i += 3;
             } else if (curr.equals("m")) {
@@ -364,7 +375,7 @@ public class svp_interpreter_rolling extends PApplet{
                 }
                 lastPoint.set(p2);
                 i += 3;
-            }else if (curr.equals("c")) {
+            } else if (curr.equals("c")) {
                 PVector p2 = PVector.add(lastPoint,
                         new PVector(Float.parseFloat(curves.get(i + 1)), Float.parseFloat(curves.get(i + 2))));
                 PVector p3 = PVector.add(lastPoint,
@@ -431,8 +442,7 @@ public class svp_interpreter_rolling extends PApplet{
                 }
                 lastPoint.set(p4);
                 i += 5;
-            }
-            else {
+            } else {
                 i++;
             }
         }
