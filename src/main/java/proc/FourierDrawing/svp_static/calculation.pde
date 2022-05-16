@@ -50,7 +50,7 @@ void drawPath() {
   if (route.size() <= TWO_PI / rotateSpeed + 1) 
     route.add(pen.copy());
   stroke(255, 255, 0);
-  strokeWeight(3);
+  strokeWeight(10);
   beginShape();
   for (PVector p : route) {
     vertex(p.x * scale, p.y * scale);

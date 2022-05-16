@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class svg_interpreter extends PApplet {
-
     int numVectors = 101;
     float scale = 0.5f;
     boolean initialized = false;
@@ -65,7 +64,7 @@ public class svg_interpreter extends PApplet {
             for (float t = 0; t <= 1; t += 1.0 / (float) points.size()) {
                 PVector v = points.get((int) (t * points.size()));
                 float r = sqrt(v.x * v.x + v.y * v.y);
-                float theta = atan(v.y / v.x) - n * TWO_PI * t;
+                float theta = atan2(v.y , v.x) - n * TWO_PI * t;
                 total.add(new PVector(r * cos(theta), r * sin(theta)));
             }
             total.div(points.size());
@@ -78,7 +77,7 @@ public class svg_interpreter extends PApplet {
             for (float t = 0; t <= 1; t += 1.0 / (float) points.size()) {
                 PVector v = points.get((int) (t * points.size()));
                 float r = sqrt(v.x * v.x + v.y * v.y);
-                float theta = atan(v.y / v.x) + n * TWO_PI * t;
+                float theta = atan2(v.y, v.x) + n * TWO_PI * t;
                 total.add(new PVector(r * cos(theta), r * sin(theta)));
             }
             total.div(points.size());

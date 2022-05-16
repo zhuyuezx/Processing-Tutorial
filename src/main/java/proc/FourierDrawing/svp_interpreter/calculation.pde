@@ -67,7 +67,7 @@ void drawPath() {
     }
   }
   stroke(255, 255, 0);
-  strokeWeight(3);
+  strokeWeight(10);
   beginShape();
   for (PVector p : route) {
     vertex(p.x * scale, p.y * scale);

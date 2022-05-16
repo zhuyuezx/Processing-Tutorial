@@ -3,12 +3,12 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.HashMap;
 
-int numVectors = 501;
-float scale = 5;
+int numVectors = 101;
+float scale = 1.9;
 float origScale = scale;
 float rotateSpeed = 0.01;
 float changeRate = 0.01;
-boolean drawPath = false;
+boolean drawPath = true;
 
 ArrayList<PVector> vectors = new ArrayList();
 ArrayList<PVector> nVectors = new ArrayList();
@@ -21,10 +21,10 @@ ArrayList<PVector> route = new ArrayList();
 void setup() {
   fullScreen();
 
-  //String path = extractSvg("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Pi-symbol.svg");
+  String path = extractSvg("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Pi-symbol.svg");
   //String path = extractSvg("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/france-23502.svg");
   //String path = extractSvg("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/britain.svg");
-  String path = extractSvg("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Xi.svg");
+  //String path = extractSvg("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Xi.svg");
   
   commands = extractCommands(path);
   commandsAutoFill();
@@ -40,6 +40,7 @@ void draw() {
   drawPath();
   
   rec();
+  savePic();
   
   textSize(30);
   String msg1 = "number of vector: " + numVectors;
@@ -51,4 +52,9 @@ void draw() {
   text(msg3, 40, height - 50, 400, 40);
   
   //rec();
+}
+
+void savePic() {
+  if (frameCount % 100 == 0)
+    saveFrame("rolling/rolling-####.jpg");
 }
