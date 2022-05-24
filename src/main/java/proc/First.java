@@ -13,7 +13,7 @@ public class First extends PApplet {
     }
 
     public static void main(String... args) {
-        PApplet.main("proc.sketches.First");
+        PApplet.main("proc.First");
     }
 
 }

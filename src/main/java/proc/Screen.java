@@ -33,7 +33,7 @@ public class Screen extends PApplet {
 
 
     public static void main(String... args) {
-        PApplet.main("proc.sketches.Screen");
+        PApplet.main("proc.Screen");
     }
 
 }
