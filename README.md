@@ -1,4 +1,7 @@
 # Tutorial Code
+
+Read the [Fourier_README](./Fourier_README.md) to get more steps about Tutorial of Fourier Drawing for the svg file, which may help you run the code on your own. 
+
 ## You can find the video tutorial [here](https://www.youtube.com/c/thedotisblack/videos)
 The original code is based on [thedotisBlack.com](https://www.thedotisBlack.com), where I do sligh perosnal modifications that make them more interesting (at least from my perspective).
 
