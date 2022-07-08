@@ -1,6 +1,4 @@
-const tiles = [];
-const tileImages = [];
-
+let tiles = [];
 const DIM = 20;
 let grid = [];
 const BLANK = 0;
@@ -9,35 +7,55 @@ const RIGHT = 2;
 const DOWN = 3;
 const LEFT = 4;
 
-
+const rules = [
+  [
+    [BLANK, UP],
+    [BLANK, RIGHT],
+    [BLANK, DOWN],
+    [BLANK, LEFT]
+  ],
+  [
+    [RIGHT, LEFT, DOWN],
+    [LEFT, UP, DOWN],
+    [BLANK, DOWN],
+    [RIGHT, UP, DOWN]
+  ],
+  [
+    [RIGHT, LEFT, DOWN],
+    [LEFT, UP, DOWN],
+    [RIGHT, LEFT, UP],
+    [BLANK, LEFT]
+  ],
+  [
+    [BLANK, UP],
+    [LEFT, UP, DOWN],
+    [RIGHT, LEFT, UP],
+    [RIGHT, UP, DOWN]
+  ],
+  [
+    [RIGHT, LEFT, DOWN],
+    [BLANK, RIGHT],
+    [RIGHT, LEFT, UP],
+    [UP, DOWN, RIGHT]
+  ]
+];
 
 function preload() {
-  const path = "tiles/demo";
-  tileImages[0] = loadImage(`${path}/blank.png`);
-  tileImages[1] = loadImage(`${path}/up.png`);
-  // tileImages[2] = loadImage(`${path}/right.png`);
-  // tileImages[3] = loadImage(`${path}/down.png`);
-  // tileImages[4] = loadImage(`${path}/left.png`);
+  tiles[0] = loadImage("tiles/demo/blank.png");
+  tiles[1] = loadImage("tiles/demo/up.png");
+  tiles[2] = loadImage("tiles/demo/right.png");
+  tiles[3] = loadImage("tiles/demo/down.png");
+  tiles[4] = loadImage("tiles/demo/left.png");
 }
 
 function setup() {
   createCanvas(800, 800);
 
-  tiles[0] = new Tile(tileImages[0], [0, 0, 0, 0]);
-  tiles[1] = new Tile(tileImages[1], [1, 1, 0, 1]);
-  tiles[2] = tiles[1].rotate(1);
-  tiles[3] = tiles[1].rotate(2);
-  tiles[4] = tiles[1].rotate(3);
-
-  // Generate the adjacency rules based on edges
-  for (let i = 0; i < tiles.length; i++) {
-    const tile = tiles[i];
-    tile.analyze(tiles);
-  }
-
-  // Create cell for each spot on the grid
   for (let i = 0; i < DIM * DIM; i++) {
-    grid[i] = new Cell(tiles.length);
+    grid[i] = {
+      collapsed: false,
+      options: [BLANK, UP, RIGHT, DOWN, LEFT],
+    };
   }
 }
 
@@ -98,8 +116,7 @@ function draw() {
       let cell = grid[j * DIM + i];
       if (cell.collapsed) {
         let index = cell.options[0];
-        console.log(cell);
-        image(tiles[index].img, i * w, j * h, w, h);
+        image(tiles[index], i * w, j * h, w, h);
       } else {
         fill(0);
         stroke(255);
@@ -115,13 +132,13 @@ function draw() {
       if (grid[index].collapsed) {
         nextGrid[index] = grid[index];
       } else {
-        let options = new Array(tiles.length).fill(0).map((x, i) => i);
+        let options = [BLANK, UP, RIGHT, DOWN, LEFT];
         // Loop up
         if (j > 0) {
           let up = grid[(j - 1) * DIM + i];
           let validOptions = [];
           for (let option of up.options) {
-            let valid = tiles[option].down;
+            let valid = rules[option][2];
             validOptions = validOptions.concat(valid);
           }
           checkValid(options, validOptions);
@@ -131,7 +148,7 @@ function draw() {
           let right = grid[i + 1 + j * DIM];
           let validOptions = [];
           for (let option of right.options) {
-            let valid = tiles[option].left;
+            let valid = rules[option][3];
             validOptions = validOptions.concat(valid);
           }
           checkValid(options, validOptions);
@@ -141,7 +158,7 @@ function draw() {
           let down = grid[i + (j + 1) * DIM];
           let validOptions = [];
           for (let option of down.options) {
-            let valid = tiles[option].up;
+            let valid = rules[option][0];
             validOptions = validOptions.concat(valid);
           }
           checkValid(options, validOptions);
@@ -151,15 +168,17 @@ function draw() {
           let left = grid[i - 1 + j * DIM];
           let validOptions = [];
           for (let option of left.options) {
-            let valid = tiles[option].right;
+            let valid = rules[option][1];
             validOptions = validOptions.concat(valid);
           }
           checkValid(options, validOptions);
         }
-        nextGrid[index] = new Cell(options);
+        nextGrid[index] = {
+          options, 
+          collapsed: false
+        };
       }
     }
   }
   grid = nextGrid;
-  //noLoop();
 }
