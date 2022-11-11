@@ -21,10 +21,10 @@ void setup() {
   fullScreen();
   //size(960, 1080);
 
-  String path = extractSvg("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Pi-symbol.svg");
+  //String path = extractSvg("T:/StudyDoc/ComputerLanguage/Java/Processing_Fourier/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Pi-symbol.svg");
   //String path = extractSvg("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/france-23502.svg");
   //String path = extractSvg("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/britain.svg");
-  //String path = extractSvg("D:/processing_code/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Russia.svg");
+  String path = extractSvg("T:/StudyDoc/ComputerLanguage/Java/Processing_Fourier/Processing_Tutorial/src/main/java/proc/FourierDrawing/svp_interpreter/Russia.svg");
   commands = extractCommands(path);
   commandsAutoFill();
 
@@ -43,6 +43,6 @@ void draw() {
 }
 
 void savePic() {
-  if (frameCount % 100 == 0)
-    saveFrame("rolling/rolling-####.jpg");
+  //if (frameCount % 100 == 0)
+  //  saveFrame("rolling/rolling-####.jpg");
 }
